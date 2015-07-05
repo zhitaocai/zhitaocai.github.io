@@ -113,7 +113,7 @@ duoshuo_shortname: caizhitao
 ## Themes: http://hexo.io/themes/
 
 # 博客主题
-theme: jacman
+theme: jacman_diy
 exclude_generator: 
 
 

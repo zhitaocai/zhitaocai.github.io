@@ -25,21 +25,22 @@ rss: /atom.xml ## RSS address.
 
 #### Image
 imglogo:
-  enable: true                              ## display image logo true/false.
+  enable: true                              ## 是否显示网站 logo display image logo true/false.
   src: img/logo.jpg                         ## `.svg` and `.png` are recommended,please put image into the theme folder `/jacman/source/img`.
-favicon: img/freedom_32x32.ico              ## size:32px*32px,`.ico` is recommended,please put image into the theme folder `/jacman/source/img`.     
-apple_icon: img/freedom_114x114.jpg         ## size:114px*114px,please put image into the theme folder `/jacman/source/img`.
-author_img: img/author_freedom_220x220.jpg  ## size:220px*220px.display author avatar picture.if don't want to display,please don't set this.
-banner_img: img/banner.jpg                  ## size:1920px*200px+. Banner Picture
+favicon: img/freedom_32x32.ico              ## 网站图标size:32px*32px,`.ico` is recommended,please put image into the theme folder `/jacman/source/img`.     
+apple_icon: img/freedom_114x114.jpg         ## 苹果设备上的图标，背景不要透明size:114px*114px,please put image into the theme folder `/jacman/source/img`.
+author_img: img/author_freedom_220x220.jpg  ## 网站底部博主头像size:220px*220px.display author avatar picture.if don't want to display,please don't set this.
+banner_img: img/banner.jpg                  ## 网站顶部博主头像size:1920px*200px+. Banner Picture
 ### Theme Color 
 theme_color:
     theme: '#2ca6cb'    ##the defaut theme color is blue
 
 # 代码高亮主题
 # available: default | night
-highlight_theme: default
+highlight_theme: night
 
 #### index post is expanding or not 
+## 首页文章是否展开
 index:
   expand: true           ## default is unexpanding,so you can only see the short description of each post.
   excerpt_link: 阅读全文 ## 当设置摘要时，readmore那个按钮的文字 
@@ -71,8 +72,8 @@ author:
 
 #### Toc
 toc:
-  article: true   ## show contents in article.
-  aside: true     ## show contents in aside.
+  article: true   ## 是否在文章中显示目录show contents in article.
+  aside: true     ## 是否在侧边栏显示目录show contents in aside.
 ## you can set both of the value to true of neither of them.
 ## if you don't want display contents in a specified post,you can modify `front-matter` and add `toc: false`.
 
@@ -102,8 +103,8 @@ google_analytics:
 ## You MUST upgrade to Universal Analytics first!
 ## https://developers.google.com/analytics/devguides/collection/upgrade/?hl=zh_CN
 baidu_tongji:
-  enable: false
-  sitecode:  ## e.g. e6d1f421bbc9962127a50488f9ed37d1 your baidu tongji site code
+  enable: true
+  sitecode:  86b8e909fc50a5340f9c4381ad36cf46 ## e.g. e6d1f421bbc9962127a50488f9ed37d1 your baidu tongji site code
 cnzz_tongji:
   enable: false
   siteid:    ## e.g. 1253575964 your cnzz tongji site id

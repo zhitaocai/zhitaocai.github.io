@@ -42,7 +42,7 @@ highlight_theme: default
 #### index post is expanding or not 
 index:
   expand: true           ## default is unexpanding,so you can only see the short description of each post.
-  excerpt_link: Read More  
+  excerpt_link: 阅读全文 ## 当设置摘要时，readmore那个按钮的文字 
 
 close_aside: false  #close sidebar in post page if true
 mathjax: false      #enable mathjax if true
@@ -76,20 +76,17 @@ toc:
 ## you can set both of the value to true of neither of them.
 ## if you don't want display contents in a specified post,you can modify `front-matter` and add `toc: false`.
 
-#### Links
+#### Links 友情链接
 links:
   码农圈: https://coderq.com,一个面向程序员交流分享的新一代社区
-  Jark's Blog: http://wuchong.me
+  ##Jark's Blog: http://wuchong.me
 
 
 
 #### Comment
-
-## e.g. wuchong   your duoshuo short name.
-duoshuo_shortname:  saisam  
-
-## e.g. wuchong   your disqus short name.
-disqus_shortname:   saisam  
+## 在Hexo中，默认使用的评论是国外的Disqus,不过因为国内的”网络环境”问题，我们改为国内的“多说”评论系统。
+## duoshuo_shortname: caizhitao
+## disqus_shortname: caizhitao.com
 
 #### Share button
 jiathis:
@@ -115,7 +112,7 @@ cnzz_tongji:
 ShowCustomFont: true  ## you can change custom font in `variable.styl` and `font.styl` which in the theme folder `/jacman/source/css`.
 fancybox: true        ## if you use gallery post or want use fancybox please set the value to true.
 totop: true           ## if you want to scroll to top in every post set the value to true
-
+baidushare: true      ## Baidu share #百度分享
 
 #### Custom Search
 google_cse: 
@@ -135,3 +132,5 @@ baidu_search:     ## http://zn.baidu.com/
 tinysou_search:     ## http://tinysou.com/
   enable: false
   id:  ## e.g. "4ac092ad8d749fdc6293" for your tiny search id
+  
+

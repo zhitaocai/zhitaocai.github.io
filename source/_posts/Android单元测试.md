@@ -365,6 +365,16 @@ Instrumentation 似乎有些类似与 window 中的“钩子（Hook）函数”�
 |InstrumentationTestSuite|它扩展了 JUnit TestSuite，其主要作用是保证每个 TestCase 在运行前 ， Instrumentation 能注入到 TestCase 中 ，InstrumentationTestRunner 中需要使用 InstrumentationTestSuite。|
 
 
+## Android注解标签说明
+
+|标签|说明| 
+|--|--|
+|``@Suppress``|可以用在类或这方法上，这样该类或者该方法就不会被执行| 
+|``@UiThreadTest``|可以用在方法上，这样该方法就会在程序的ui线程上执行| 
+|``@LargeTest``,``@MediumTest``,``@SmallTest``|用在方法上，标记所属的测试类型，主要是用于单独执行其中的某一类测试时使用。具体参考InstrumentationTestRunner类的文档。 |
+|``@Smoke``|具体用法还不清楚| 
+
+
 # 参考资料
 
 +  **【强推】**[Android、JUnit深入浅出.pdf](/pdf/Android、JUnit深入浅出.pdf)
@@ -375,6 +385,6 @@ Instrumentation 似乎有些类似与 window 中的“钩子（Hook）函数”�
 +  [Junit使用教程（二）](http://blog.csdn.net/wangpeng047/article/details/9628449)
 +  [Junit使用教程（三）](http://blog.csdn.net/wangpeng047/article/details/9630203)
 +  [Gradle Unit Test](http://ask.android-studio.org/?/article/44)
-+  [JUnit中按照顺序执行测试方式](http://www.cnblogs.com/nexiyi/p/junit_test_in_order.html)
-+  [Junit指定测试执行顺序](http://blog.csdn.net/renfufei/article/details/36421087)
++  [JUnit4中按照顺序执行测试方式](http://www.cnblogs.com/nexiyi/p/junit_test_in_order.html)
++  [Junit4指定测试执行顺序](http://blog.csdn.net/renfufei/article/details/36421087)
 +  [Android单元测试](http://www.cnblogs.com/tianzhijiexian/p/4296055.html)

@@ -225,6 +225,73 @@ public class Junit3TestSuite extends TestSuite {
 
 
 # Junit4
+## 指定测试方法的执行顺序
+从**Junit4.11**版本开始，Junit支持指定测试执行顺序。
+
+
+|参数|说明|
+|--|--|
+|``@FixMethodOrder(MethodSorters.DEFAULT)``|**默认值**，使用一个确定的但是不可预测的排序|
+|``@FixMethodOrder(MethodSorters.NAME_ASCENDING)``|根据测试方法的方法名排序,按照词典排序规则(ASC,从小到大,递增)。|
+|``@FixMethodOrder(MethodSorters.JVM)``|保留测试方法的执行顺序为JVM返回的顺序。每次测试的执行顺序有可能会所不同。|
+
+只需要在测试类添加上面3个注解之一即可:
+
+```java
+    package com.czt.saisam.unittest.util.junit4;
+    
+    import org.junit.FixMethodOrder;
+    import org.junit.Test;
+    import org.junit.runners.MethodSorters;
+    
+    /**
+     * 测试junit 4的测试方法执行顺序
+     *
+     * @author zhitao
+     * @since 2015-07-12 23:55
+     */
+    
+    //默认值：使用一个确定的但是不可预测的排序
+    @FixMethodOrder(MethodSorters.DEFAULT)
+    
+    //根据测试方法的方法名排序,按照词典排序规则(ASC,从小到大,递增)。
+    //@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+    
+    //保留测试方法的执行顺序为JVM返回的顺序。每次测试的执行顺序有可能会所不同。
+    //@FixMethodOrder(MethodSorters.JVM)
+    
+    public class OrderTest {
+    
+        @Test
+        public void a() {
+            System.out.println("======a======");
+        }
+    
+        @Test
+        public void d() {
+            System.out.println("======d======");
+        }
+    
+        @Test
+        public void c() {
+            System.out.println("======c======");
+        }
+    
+        @Test
+        public void b() {
+            System.out.println("======b======");
+        }
+    }
+```
+
+**总结：**
+
+实际测试，``MethodSorters.DEFAULT``和``MethodSorters.NAME_ASCENDING``基本一样的执行顺序，这里还没搞懂不同的地方，而且仅有的这3个参数其实并不能满足我们的实际需求，如果确实需要制定测试执行顺序，感觉下面两个方案可行：
+
+  1. 采用Junit4的这种指定测试执行顺序的参数，但是需要将你的测试方法名都要修改为能够按照字母由小到大排序的命名；
+  2. 将需要按照顺序指定的测试方法集中到一个方法中执行，以模拟**按指定顺序**执行。
+
+
 
 到了Junit4，我们看一下前面的Junit3使用过后的一些感想:
 

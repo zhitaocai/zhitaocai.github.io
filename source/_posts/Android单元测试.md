@@ -327,6 +327,43 @@ public class Junit3TestSuite extends TestSuite {
 ## 异步方法测试
 参考我的另外一篇博客: http://blog.csdn.net/czt_saisam/article/details/46637007
 
+## 包名说明
+
+|SDK |功能说明|
+|--|--|
+|junit.framework|JUnit 测试框架|
+|junit.runner|实用工具类支持 JUnit 测试框架|
+|android.test|Android 对 JUnit 测试框架的扩展包|
+|android.test.mock|Android 的一些辅助类|
+|android.test.suitebuilder|实用工具类，支持类的测试运行|
+
+在这些包中最为重要的是：``junit.framework``、``android.test``，其中前者是 JUnit 的核心包，后者是 Andoid SDK 在 Junit.framework 的基础上扩展出来的包，我们将重点解析这 2 个包。
+
+## 各个andorid测试类说明
+
+``android.test``包下主要包含下面的类:
+
+|类|说明|
+|--|--|
+|AndroidTestCase|如果你要访问资源或其他东西依赖于 Activity 的环境，在这个类的基础上扩展。|
+|ActivityInstrumentationTestCase2 <T extends Activity>|这个类提供了一个单一的活动功能测试|
+|ApplicationTestCase <T extends Application>|提供了一个框架，可以在受控环境中测试 Application 类|
+|ProviderTestCase2 <T extends ContentProvider>|提供了一个框架，可以在受控环境中测试 ContentProvider 类|
+|ServiceTestCase <T extends Service>|提供了一个框架，可以在受控环境中测试 ServiceTest 类。|
+
+## 什么是 Instrumentation？
+> Instrumentation 是执行 application instrumentation 代码的基类。当应用程序运行的时候 instrumentation 处于开启，Instrumentation 将在任何应用 程序运行
+前初始化，可以通过它监测系统与应用程序之间的交互。Instrumentation implementation 通过的 AndroidManifest.xml 中的<instrumentation>标签进行描述。
+Instrumentation 似乎有些类似与 window 中的“钩子（Hook）函数”，在系统与应用程序之间安装了个“窃听器”。
+
+
+## Instrumentation 的说明
+|类|说明|
+|--|--|
+|InstrumentationTestCase|它扩展了 JUnit 中 的 TastCase ，并提供了一个接口getInstrumentation() 获取 Instrumentation 类。这个可以根据自己的需求来扩展这个类，比如说：测试中可能会启动某个 Avtivity 和发送按键事件，为此完成测 试，instrumentation 需要将其注入到TastCase 中。|
+|InstrumentationTestRunner|它是 Instrumentation 的基础上扩展的，它将自己注入到每个测试用例本身，测试用例需要分组到一个适当的InstrumentationTestRunner 运行起来。|
+|InstrumentationTestSuite|它扩展了 JUnit TestSuite，其主要作用是保证每个 TestCase 在运行前 ， Instrumentation 能注入到 TestCase 中 ，InstrumentationTestRunner 中需要使用 InstrumentationTestSuite。|
+
 
 # 参考资料
 

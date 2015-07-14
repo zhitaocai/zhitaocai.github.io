@@ -10,6 +10,8 @@ description: Android单元测试详细介绍
 date: 2015-07-06 19:49:51
 
 ---
+**写在前面，本文还没有完善好，Will be continue... @since 2015-7-7**
+
 本门主要从`什么是Junit`->`Junit4大功能`->`为什么需要单元测`->`什么时候写单元测试`->`junit3使用`->`junit4使用`->`Android单元测试使用`方面进行介绍如何在Android上进行测试
 <!--more-->
 
@@ -219,8 +221,77 @@ public class Junit3TestSuite extends TestSuite {
 
 ```
 
+通过``addTestSuite``方法可以将你想要测试的类加入进来
+
 
 # Junit4
+## 指定测试方法的执行顺序
+从**Junit4.11**版本开始，Junit支持指定测试执行顺序。
+
+
+|参数|说明|
+|--|--|
+|``@FixMethodOrder(MethodSorters.DEFAULT)``|**默认值**，使用一个确定的但是不可预测的排序|
+|``@FixMethodOrder(MethodSorters.NAME_ASCENDING)``|根据测试方法的方法名排序,按照词典排序规则(ASC,从小到大,递增)。|
+|``@FixMethodOrder(MethodSorters.JVM)``|保留测试方法的执行顺序为JVM返回的顺序。每次测试的执行顺序有可能会所不同。|
+
+只需要在测试类添加上面3个注解之一即可:
+
+```java
+    package com.czt.saisam.unittest.util.junit4;
+    
+    import org.junit.FixMethodOrder;
+    import org.junit.Test;
+    import org.junit.runners.MethodSorters;
+    
+    /**
+     * 测试junit 4的测试方法执行顺序
+     *
+     * @author zhitao
+     * @since 2015-07-12 23:55
+     */
+    
+    //默认值：使用一个确定的但是不可预测的排序
+    @FixMethodOrder(MethodSorters.DEFAULT)
+    
+    //根据测试方法的方法名排序,按照词典排序规则(ASC,从小到大,递增)。
+    //@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+    
+    //保留测试方法的执行顺序为JVM返回的顺序。每次测试的执行顺序有可能会所不同。
+    //@FixMethodOrder(MethodSorters.JVM)
+    
+    public class OrderTest {
+    
+        @Test
+        public void a() {
+            System.out.println("======a======");
+        }
+    
+        @Test
+        public void d() {
+            System.out.println("======d======");
+        }
+    
+        @Test
+        public void c() {
+            System.out.println("======c======");
+        }
+    
+        @Test
+        public void b() {
+            System.out.println("======b======");
+        }
+    }
+```
+
+**总结：**
+
+实际测试，``MethodSorters.DEFAULT``和``MethodSorters.NAME_ASCENDING``基本一样的执行顺序，这里还没搞懂不同的地方，而且仅有的这3个参数其实并不能满足我们的实际需求，如果确实需要制定测试执行顺序，感觉下面两个方案可行：
+
+  1. 采用Junit4的这种指定测试执行顺序的参数，但是需要将你的测试方法名都要修改为能够按照字母由小到大排序的命名；
+  2. 将需要按照顺序指定的测试方法集中到一个方法中执行，以模拟**按指定顺序**执行。
+
+
 
 到了Junit4，我们看一下前面的Junit3使用过后的一些感想:
 
@@ -229,6 +300,7 @@ public class Junit3TestSuite extends TestSuite {
 3. **初始化和回收代码在每个测试方法之前调用，一些方法其实可以统一初始化的，而无需每次测试前都初始化一遍，也即不支持类初始化**
 4. **如果一个方法的测试，需要模拟很多参数的是偶，需要写很多重复的代码，不够优雅**
 5. **要写的东西总感觉有点多**
+6. **细心的你可能还发现Junit3中没有明确的方法可以指定方法的执行顺序，比如test2依赖一test1执行完毕才能执行，而这个方法执行顺序需求在junit4.11版本之后，已经支持了**
 6. ...
 
 于是，就有了我们的Junit4，完美解决上面的问题，But，Andorid SDK默认是使用Junit3的，因此需要我们引入`Junit4`的类库，才能在单元测试中使用Junit4的api，在`app/build.gradle`中添加下面依赖库：
@@ -248,16 +320,138 @@ public class Junit3TestSuite extends TestSuite {
 + [Junit3、4相关使用](http://www.blogjava.net/jnbzwm/archive/2010/12/15/340801.html)
 + [Junit4注解使用](http://blog.csdn.net/wangpeng047/article/details/9628449)
 + [Junit4参数化测试、打包测试、异常测试、限时测试](http://blog.csdn.net/wangpeng047/article/details/9630203)
++ [JUnit中按照顺序执行测试方式](http://www.cnblogs.com/nexiyi/p/junit_test_in_order.html)
++ [Junit指定测试执行顺序](http://blog.csdn.net/renfufei/article/details/36421087)
 + 
 # Android单元测试
+终于说到Android的单元测试了o(︶︿︶)o 写得好累~~，先上一张醒神的图片
+
+![](/img/Android单元测试详细介绍/preview.png)
+
+看到这里，估计你明白了很多东西，总算出来`Activity`、`Service`这些东西了。如果你还细心一点的话，还会发现如果我们还是继续采用Junit3、4的这种测试方式，你会发现Android设备上完全没法搞，像获取当前应用版本名你都没法拿出来，因为你缺少最重要的上下文对象(``Context``) o(╯□╰)o
+
+```java
+    /**
+     * 取得当前应用的版本号
+     *
+     * @param context
+     *
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        try {
+            PackageInfo manager = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return manager.versionName;
+        } catch (Exception e) {
+            return "Unknown";
+        }
+    }
+```
+
+这个时候，是需要用一下上面的类了（PS:图片够红了，希望能安慰广大股民╮(╯_╰)╭）
+
+## 准备Android 单元测试环境
+1. 配置你的``AndroidManifest.xml``文件
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.czt.saisam.unittest"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 测试权限 -->
+    <uses-permission android:name="android.permission.RUN_INSTRUMENTATION"/>
+    
+    <!-- 记住这个一要放在application外面，不然会出现配置错误 信息 -->
+    <!-- android:targetPackage 填写对应的包名 -->
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="com.czt.saisam.unittest"/>
+
+    <application
+        ...
+        >
+
+        <!-- 测试链接库 -->
+        <!--user-library 元素说明：指定一个共享库，应用程序需要连接的。默认情况下会连接所有的 Android 库 -->
+        <!--然而一些软件包（如地图和 AWT）是不会自动连接独立的库，因此需要注明以确定哪些库需要包含这些特定的包代码文件-->
+        <uses-library android:name="android.test.runner"/>
+        
+        ...
+    </application>
+
+</manifest>
+```
+2. 切换**Build Variants** 为 **Android Instrumentation Test**
+
+## 使用InstrumentTestCase
+1. 当你在Android设别上，要测试与Android环境无关的方法时，推荐继承InstrumentationTestCase来进行测试。比如测试加减乘除之类的
+2. 当你需要模拟打开一个activity，并且模拟Intent的数据内容的时候，可以用这个类模拟打开一个activity
+
+
+## 使用AndroidTestCase
+默认提供`getContext()`方法，如果测试的内容与具体是那种类型的context无关的话，可以直接继承AndroidTestCase进行测试
+
+## 异步方法测试
+参考我的另外一篇博客: http://blog.csdn.net/czt_saisam/article/details/46637007
+
+## 包名说明
+
+|SDK |功能说明|
+|--|--|
+|junit.framework|JUnit 测试框架|
+|junit.runner|实用工具类支持 JUnit 测试框架|
+|android.test|Android 对 JUnit 测试框架的扩展包|
+|android.test.mock|Android 的一些辅助类|
+|android.test.suitebuilder|实用工具类，支持类的测试运行|
+
+在这些包中最为重要的是：``junit.framework``、``android.test``，其中前者是 JUnit 的核心包，后者是 Andoid SDK 在 Junit.framework 的基础上扩展出来的包，我们将重点解析这 2 个包。
+
+## 各个andorid测试类说明
+
+``android.test``包下主要包含下面的类:
+
+|类|说明|
+|--|--|
+|AndroidTestCase|如果你要访问资源或其他东西依赖于 Activity 的环境，在这个类的基础上扩展。|
+|ActivityInstrumentationTestCase2 <T extends Activity>|这个类提供了一个单一的活动功能测试|
+|ApplicationTestCase <T extends Application>|提供了一个框架，可以在受控环境中测试 Application 类|
+|ProviderTestCase2 <T extends ContentProvider>|提供了一个框架，可以在受控环境中测试 ContentProvider 类|
+|ServiceTestCase <T extends Service>|提供了一个框架，可以在受控环境中测试 ServiceTest 类。|
+
+## 什么是 Instrumentation？
+> Instrumentation 是执行 application instrumentation 代码的基类。当应用程序运行的时候 instrumentation 处于开启，Instrumentation 将在任何应用 程序运行
+前初始化，可以通过它监测系统与应用程序之间的交互。Instrumentation implementation 通过的 AndroidManifest.xml 中的<instrumentation>标签进行描述。
+Instrumentation 似乎有些类似与 window 中的“钩子（Hook）函数”，在系统与应用程序之间安装了个“窃听器”。
+
+
+## Instrumentation 的说明
+|类|说明|
+|--|--|
+|InstrumentationTestCase|它扩展了 JUnit 中 的 TastCase ，并提供了一个接口getInstrumentation() 获取 Instrumentation 类。这个可以根据自己的需求来扩展这个类，比如说：测试中可能会启动某个 Avtivity 和发送按键事件，为此完成测 试，instrumentation 需要将其注入到TastCase 中。|
+|InstrumentationTestRunner|它是 Instrumentation 的基础上扩展的，它将自己注入到每个测试用例本身，测试用例需要分组到一个适当的InstrumentationTestRunner 运行起来。|
+|InstrumentationTestSuite|它扩展了 JUnit TestSuite，其主要作用是保证每个 TestCase 在运行前 ， Instrumentation 能注入到 TestCase 中 ，InstrumentationTestRunner 中需要使用 InstrumentationTestSuite。|
+
+
+## Android注解标签说明
+
+|标签|说明| 
+|--|--|
+|``@Suppress``|可以用在类或这方法上，这样该类或者该方法就不会被执行| 
+|``@UiThreadTest``|可以用在方法上，这样该方法就会在程序的ui线程上执行| 
+|``@LargeTest``,``@MediumTest``,``@SmallTest``|用在方法上，标记所属的测试类型，主要是用于单独执行其中的某一类测试时使用。具体参考InstrumentationTestRunner类的文档。 |
+|``@Smoke``|具体用法还不清楚| 
 
 
 # 参考资料
 
-1. **【强推】**[Android、JUnit深入浅出.pdf](/pdf/Android、JUnit深入浅出.pdf)
-2. **【强推】**[Android应用测试指导（英文版）](http://www.vogella.com/tutorials/AndroidTesting/article.html#androidtesting)
-3. [JUnit4用法详解](http://www.blogjava.net/jnbzwm/archive/2010/12/15/340801.html)
-4. [Java魔法堂：JUnit4使用详解](http://www.cnblogs.com/fsjohnhuang/p/4061902.html)
-5. [Junit使用教程（二）](http://blog.csdn.net/wangpeng047/article/details/9628449)
-6. [Junit使用教程（三）](http://blog.csdn.net/wangpeng047/article/details/9630203)
-7. [Gradle Unit Test](http://ask.android-studio.org/?/article/44)
++  **【强推】**[Android、JUnit深入浅出.pdf](/pdf/Android、JUnit深入浅出.pdf)
++  **【强推】**[Android应用测试指导（英文版）](http://www.vogella.com/tutorials/AndroidTesting/article.html#androidtesting)
++  **【强推】**[Junit源码分析](http://sns.testin.cn/thread-1529-1-1.html)
++  [JUnit4用法详解](http://www.blogjava.net/jnbzwm/archive/2010/12/15/340801.html)
++  [Java魔法堂：JUnit4使用详解](http://www.cnblogs.com/fsjohnhuang/p/4061902.html)
++  [Junit使用教程（二）](http://blog.csdn.net/wangpeng047/article/details/9628449)
++  [Junit使用教程（三）](http://blog.csdn.net/wangpeng047/article/details/9630203)
++  [Gradle Unit Test](http://ask.android-studio.org/?/article/44)
++  [JUnit4中按照顺序执行测试方式](http://www.cnblogs.com/nexiyi/p/junit_test_in_order.html)
++  [Junit4指定测试执行顺序](http://blog.csdn.net/renfufei/article/details/36421087)
++  [Android单元测试](http://www.cnblogs.com/tianzhijiexian/p/4296055.html)

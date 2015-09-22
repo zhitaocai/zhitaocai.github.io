@@ -35,5 +35,5 @@ date: 2015-09-22 22:40:14
 
 # 参考资料
 * [ubuntu 升级ruby到2.1](http://my.oschina.net/fxhover/blog/382634)
-* [vim 即时预览markdown](http://treelib.com/book-detail-id-48-aid-2914.htmli)
+* [vim 即时预览markdown](http://treelib.com/book-detail-id-48-aid-2914.html)
 * [vim-instant-markdown具体详细配置](http://guqian110.github.io/pages/2015/02/01/learning_vim_markdown.html)

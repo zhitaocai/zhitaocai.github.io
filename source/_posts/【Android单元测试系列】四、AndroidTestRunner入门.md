@@ -29,6 +29,11 @@ date: 2016-01-07 11:18:12
 
 ## AndroidJunitTest 测试不通过的时候，错误的描述详细程度比起Junit4差很多
 
+## robolectric可以测试Toast是否已经弹出来，但是AndoridJunit4就不行 
+
+## robolectric 因为运行在Jvm上，所以设备参数那些你就不用想这用robolectic来测试了，也就是说请求协议的请求参数，需要用到设备参数的，基本都不能用robolectic来测试，因此robolectric基本只能用Shadow来模拟请求结果，跳过请求，直接执行请求结果之后的逻辑
+
+## 测试logcat是否输出预期的内容或者是否通过修改开关就能不输出log的测试还不知道怎么写，因为不知道怎么判断logcat是否在输出东西
 
 # 参考资料
 

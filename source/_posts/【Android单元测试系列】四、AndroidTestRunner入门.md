@@ -35,6 +35,41 @@ date: 2016-01-07 11:18:12
 
 ## 测试logcat是否输出预期的内容或者是否通过修改开关就能不输出log的测试还不知道怎么写，因为不知道怎么判断logcat是否在输出东西
 
+## 命令行运行Android单元测试
+
+### Running Instrumentation/Espresso Tests with Gradle
+
+```java
+
+    // Run all instrumentation tests in all flavors:
+    gradlew connectedAndroidTest
+
+    // Run all instrumentation debug flavor tests:
+    gradlew connectedDebugAndroidTest
+
+```
+
+### Running Unit Tests with Gradle
+
+```java
+
+    // Run all unit tests in all flavors:
+    gradlew test
+
+    // Run a single unit test in all flavors:
+    gradlew test --tests="*MainActivityTest*"
+
+    // Run all unit debug flavor tests:
+    gradlew testDebug
+
+    // Run a single unit test in the debug flavor:
+    gradlew testDebug --tests="*MainActivityTest*"
+
+    // Run a single unit test in the debug flavor with Jacoco test reports:
+    gradlew testDebug --tests="*MainActivityTest*" jacocoDebugReport
+
+```
+
 # 参考资料
 
 * http://www.vogella.com/tutorials/AndroidTesting/article.html 

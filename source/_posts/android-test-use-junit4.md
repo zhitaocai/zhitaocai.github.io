@@ -1,10 +1,9 @@
 title: 【Android单元测试系列】二、Junit4使用
 tags:
-  - Android
-  - Junit
+  - Junit4
 categories:
-  - Android开发
-  - Android测试
+  - Android Test
+description: getting start with Junit4
 date: 2015-07-20 21:25:01
 ---
 在阅读本文之前，强烈建议仔细阅读上文了解Junit3的一些相关内容，那么你更需要了解Junit4。

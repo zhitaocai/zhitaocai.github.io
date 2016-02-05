@@ -1,12 +1,9 @@
 title: 【Android单元测试系列】一、Junit3使用
 tags:
-  - Android
-  - Junit
+  - Junit3
 categories:
-  - Android开发
-  - Android测试
-
-description: 【Android单元测试系列】一、Junit3使用
+  - Android Test
+description: getting start with Junit3
 date: 2015-07-14 22:31:35
 
 ---

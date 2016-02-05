@@ -1,11 +1,9 @@
 title: 【Android单元测试系列】三、Instrumentation
 tags:
-  - Android
+  - Intrumentation
 categories:
-  - Android开发
-  - Android测试
-
-description: 【Android单元测试系列】三、备忘
+  - Android Test
+description: get understand with Instrumentation
 date: 2016-01-07 11:18:12
 
 ---

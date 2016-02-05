@@ -1,8 +1,9 @@
-title: ADB命令手册
+title: ADB常用命令手册
 tags:
-  - Android
+  - adb
 categories:
-  - Android开发
+  - Android Tools
+description: useful adb shell cmd
 date: 2016-01-20 15:07:05
 ---
 记住一些常用的adb命令，会为我们的工作提供极大的帮助 
@@ -15,6 +16,7 @@ date: 2016-01-20 15:07:05
 ```
     adb shell pm clear com.your.pkgname
 ```
+
 
 ## 参考资料
 

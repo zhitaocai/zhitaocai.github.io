@@ -1,8 +1,9 @@
 title: 【Android设备信息】IMSI、ICCID、KI
 tags:
-  - Android设备标识
+  - Android UIDS
 categories:
-  - Android开发
+  - Android Develop
+description: understand IMSI ICCID KI
 date: 2015-12-01 10:41:56
 ---
 你应该需要知道的Android设备标识。

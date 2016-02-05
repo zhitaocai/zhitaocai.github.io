@@ -1,8 +1,9 @@
 title: 获取当前顶端包名【兼容所有系统】
 tags:
-  - Android 
   - Android L兼容 
-categories: Android开发 
+categories: 
+  - Android Develop
+description: different ways to get top packagename in Android
 date: 2015-09-29 16:19:28
 ---
 

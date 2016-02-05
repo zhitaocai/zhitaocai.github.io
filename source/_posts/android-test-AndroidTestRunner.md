@@ -1,11 +1,9 @@
-title: 【Android单元测试系列】三、Instrumentation
+title: 【Android单元测试系列】备忘
 tags:
-  - Android
+  - AndroidTestRunner
 categories:
-  - Android开发
-  - Android测试
-
-description: 【Android单元测试系列】三、备忘
+  - Android Test
+description: Memo about Android Test
 date: 2016-01-07 11:18:12
 
 ---

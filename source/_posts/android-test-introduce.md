@@ -1,12 +1,9 @@
 title: 【Android单元测试系列】前言
 tags:
-  - Android
-  - Junit
+  - 
 categories:
-  - Android开发
-  - Android测试
-
-description: 【Android单元测试系列】前言
+  - Android Test
+description: getting start with Android Test
 date: 2015-07-14 22:27:35
 
 ---

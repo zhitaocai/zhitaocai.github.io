@@ -3,7 +3,6 @@ tags:
   - 
 categories:
   - Android Test
-description: getting start with Android Test
 date: 2015-07-14 22:27:35
 
 ---

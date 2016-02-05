@@ -4,7 +4,6 @@ tags:
 categories:
   - 搭建个人博客
   - vim
-description: write markdown via vim
 date: 2015-09-22 22:40:14
 ---
 这次和大家分享一个vim即时预览markdown的插件[vim-instant-markdown](https://github.com/suan/vim-instant-markdown)

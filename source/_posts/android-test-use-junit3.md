@@ -3,7 +3,6 @@ tags:
   - Junit3
 categories:
   - Android Test
-description: getting start with Junit3
 date: 2015-07-14 22:31:35
 
 ---

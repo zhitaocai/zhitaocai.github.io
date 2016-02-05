@@ -3,7 +3,6 @@ tags:
   - adb
 categories:
   - Android Tools
-description: useful adb shell cmd
 date: 2016-01-20 15:07:05
 ---
 记住一些常用的adb命令，会为我们的工作提供极大的帮助 

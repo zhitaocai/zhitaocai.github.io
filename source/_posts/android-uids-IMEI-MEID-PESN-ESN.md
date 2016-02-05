@@ -3,7 +3,6 @@ tags:
   - Android UIDS
 categories:
   - Android Develop
-description: understand IMEI MEID PESN ESN
 date: 2015-11-27 15:29:55
 ---
 你应该需要知道的Android设备标识。

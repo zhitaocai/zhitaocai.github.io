@@ -3,7 +3,6 @@ tags:
   - Android L兼容 
 categories: 
   - Android Develop
-description: different ways to get top packagename in Android
 date: 2015-09-29 16:19:28
 ---
 

@@ -10,14 +10,15 @@ title: Zhitao Cai's Blog
 # 网站主页副标题
 subtitle: 专注成就专业，我只饮菠萝啤
 
-# 站点描述，给搜索引擎看的
-description: Zhitao Cai's Blog 
+# 站点描述
+description: 专注成就专业，我只饮菠萝啤
 
 # 作者
 author: Zhitao Cai
-language: zh-CN
+#language: zh-CN
+language: zh-Hans
 timezone: 
-
+avatar: /author.jpg
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://caizhitao.com
@@ -103,17 +104,12 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
-# Disqus #社会化评论disqus，我使用多说，在主题中配置
-# disqus_shortname: 
-duoshuo_shortname: caizhitao
-
-
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 ## Themes: http://hexo.io/themes/
 
 # 博客主题
-theme: jacman_diy
+theme: next
 exclude_generator: 
 
 
@@ -135,4 +131,40 @@ deploy:
   type: git
   repo: git@github.com:zhitaocai/zhitaocai.github.io.git
   branch: master
-  
+
+
+#######################################################################################
+# 第三方服务
+# Disqus #社会化评论disqus，我使用多说，在主题中配置
+# disqus_shortname: 
+duoshuo_shortname: caizhitao
+duoshuo_share: true 
+
+# 百度统计
+baidu_analytics: 86b8e909fc50a5340f9c4381ad36cf46
+
+
+#######################################################################################
+#### Links 友情链接
+links_title: Star
+links:
+  ##码农圈: https://coderq.com,一个面向程序员交流分享的新一代社区
+  StormZhang: http://stormzhang.com/
+  Trinea: http://www.trinea.cn/category/android/
+  GuoLin: http://my.csdn.net/sinyu890807
+  Jark: http://wuchong.me
+  IissNan: http://notes.iissnan.com/
+
+# Social links
+social:
+  GitHub: https://github.com/zhitaocai
+  Weibo: http://weibo.com/caizhitao
+  #Others:
+
+# Social Icons
+social_icons:
+  enable: true
+  # Icon Mappings
+  GitHub: github
+  Twitter: twitter
+  Weibo: weibo

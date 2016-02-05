@@ -3,7 +3,6 @@ tags:
   - Junit4
 categories:
   - Android Test
-description: getting start with Junit4
 date: 2015-07-20 21:25:01
 ---
 在阅读本文之前，强烈建议仔细阅读上文了解Junit3的一些相关内容，那么你更需要了解Junit4。

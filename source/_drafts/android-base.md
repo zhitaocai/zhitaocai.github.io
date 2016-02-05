@@ -27,6 +27,7 @@ date: 2015-11-27 10:53:15
 
 * [了解AndroidManifest.xml各个标签](http://www.cnblogs.com/pilang/archive/2011/04/20/2022932.html)
 * [Android静态变量生命周期](http://blog.csdn.net/ctcwri/article/details/8858414)
+* [v4 v7 v13类库理解](http://stormzhang.com/android/2015/03/29/android-support-library/)
 
 # 工具
 

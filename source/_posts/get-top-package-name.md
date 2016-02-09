@@ -1,6 +1,6 @@
 title: 获取当前顶端包名【兼容所有系统】
 tags:
-  - Android L兼容 
+  - Android 系统兼容 
 categories: 
   - Android Develop
 date: 2015-09-29 16:19:28

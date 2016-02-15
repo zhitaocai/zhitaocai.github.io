@@ -27,7 +27,7 @@ since: 2015
 menu:
   home: /
   categories: /categories
-  about: /about
+  #about: /about
   archives: /archives
   tags: /tags
   #commonweal: /404.html
@@ -87,8 +87,8 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle icon.
-  display: post
-  #display: always
+  #display: post
+  display: always
   #display: hide
   #display: remove
 
@@ -149,6 +149,7 @@ mathjax:
 
 # Share
 #jiathis:
+#add_this_id:
 
 # Share
 #duoshuo_share: true

@@ -47,32 +47,29 @@ Toast的弹出流程：
     import android.widget.TextView;
     import android.widget.Toast;
 
+    import java.util.concurrent.BlockingQueue;
+    import java.util.concurrent.LinkedBlockingQueue;
+    import java.util.concurrent.atomic.AtomicInteger;
+
     import io.github.zhitaocai.toastcompat.util.DisplayUtil;
 
     /**
-     * TODO 支持队列展示(下一个即将显示的toast，不会在上一个toast还没有消失之前就弹出来) 思路参考如下：简单为一个队列
-     * <p/>
-     * <pre>
-     *      show() {
-     *          1. 加入到队列
-     *          2. 激活队列
-     *              while(队列不空) {
-     *                  1. 显示
-     *                  2. 阻塞一段时间（显示时间的长度） 或者指定后续操作的执行时间点 (AtTime)
-     *                  3. 消失(removeView)
-     *                  4. 从队列中移除
-     *              }
-     *      }
-     * </pre>
-     * <p/>
-     * PS: 你可能会注意到，下面写死了一些常量数字。作为一个Android党，你可能觉得这个写死一个数字会很难做兼容，但是下面用到的数字都不是瞎编的～
-     *
      * @author zhitao
      * @since 2016-01-21 14:33
      */
-    public class MIUIToastCompat implements IToast {
+    public class MIUIToast implements IToast {
 
         private static Handler mHandler = new Handler();
+
+        /**
+         * 维护toast的队列
+         */
+        private static BlockingQueue<MIUIToast> mQueue = new LinkedBlockingQueue<MIUIToast>();
+
+        /**
+         * 原子操作：判断当前是否在读取{@linkplain #mQueue 队列}来显示toast
+         */
+        protected static AtomicInteger mAtomicInteger = new AtomicInteger(0);
 
         private WindowManager mWindowManager;
 
@@ -85,11 +82,12 @@ Toast的弹出流程：
         private Context mContext;
 
         public static IToast makeText(Context context, String text, long duration) {
-            return new MIUIToastCompat(context).setText(text).setDuration(duration)
+            return new MIUIToast(context).setText(text).setDuration(duration)
                     .setGravity(Gravity.BOTTOM, 0, DisplayUtil.dip2px(context, 64));
         }
 
-        public MIUIToastCompat(Context context) {
+        public MIUIToast(Context context) {
+
             mContext = context;
             mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
             mParams = new WindowManager.LayoutParams();
@@ -195,13 +193,34 @@ Toast的弹出流程：
 
         @Override
         public void show() {
-            mHandler.post(mShow);
-            mHandler.postDelayed(mHide, mDurationMillis);
+            // 1. 将本次需要显示的toast加入到队列中
+            mQueue.offer(this);
+
+            // 2. 如果队列还没有激活，就激活队列，依次展示队列中的toast
+            if (0 == mAtomicInteger.get()) {
+                mAtomicInteger.incrementAndGet();
+                mHandler.post(mActivite);
+            }
         }
 
         @Override
         public void cancel() {
-            mHandler.post(mHide);
+            // 1. 如果队列已经处于非激活状态或者队列没有toast了，就表示队列没有toast正在展示了，直接return
+            if (0 == mAtomicInteger.get() && mQueue.isEmpty()) {
+                return;
+            }
+
+            // 2. 当前显示的toast是否为本次要取消的toast，如果是的话
+            // 2.1 先移除之前的队列逻辑
+            // 2.2 立即暂停当前显示的toast
+            // 2.3 重新激活队列
+            if (this.equals(mQueue.peek())) {
+                mHandler.removeCallbacks(mActivite);
+                mHandler.post(mHide);
+                mHandler.post(mActivite);
+            }
+
+            //TODO 如果一个Toast在队列中的等候展示，当调用了这个toast的取消时，考虑是否应该从对队列中移除，看产品需求吧
         }
 
         private void handleShow() {
@@ -220,8 +239,28 @@ Toast的弹出流程：
                 // the view isn't yet added, so let's try not to crash.
                 if (mView.getParent() != null) {
                     mWindowManager.removeView(mView);
+                    // 同时从队列中移除这个toast
+                    mQueue.poll();
                 }
                 mView = null;
+            }
+        }
+
+        private static void activeQueue() {
+            MIUIToast miuiToast = mQueue.peek();
+            if (miuiToast == null) {
+                // 如果不能从队列中获取到toast的话，那么就表示已经暂时完所有的toast了
+                // 这个时候需要标记队列状态为：非激活读取中
+                mAtomicInteger.decrementAndGet();
+            } else {
+
+                // 如果还能从队列中获取到toast的话，那么就表示还有toast没有展示
+                // 1. 展示队首的toast
+                // 2. 设置一定时间后主动采取toast消失措施
+                // 3. 设置展示完毕之后再次执行本逻辑，以展示下一个toast
+                mHandler.post(miuiToast.mShow);
+                mHandler.postDelayed(miuiToast.mHide, miuiToast.mDurationMillis);
+                mHandler.postDelayed(mActivite, miuiToast.mDurationMillis);
             }
         }
 
@@ -236,6 +275,13 @@ Toast的弹出流程：
             @Override
             public void run() {
                 handleHide();
+            }
+        };
+
+        private final static Runnable mActivite = new Runnable() {
+            @Override
+            public void run() {
+                activeQueue();
             }
         };
 

@@ -244,6 +244,12 @@ Toast的弹出流程：
 
 完整源码地址在[这里](https://github.com/zhitaocai/ToastCompat)
 
+## 后记（2016-02-19）
+
+今天测试的时候，升级红米2的MIUI系统为 **MIUI 7.0 | 稳定版7.0.6.0 (LHMCNCI)** ，发现使用系统默认的toast，后台应用也能弹出toast了
+
+**所以猜测MIUI系统在某个版本区间，才会出现后台应用没法弹出toast的问题**
+
 ## 参考资料
 
 * [Android：谈一谈安卓应用中的Toast情节（基础）](http://www.cnblogs.com/net168/p/4041763.html)

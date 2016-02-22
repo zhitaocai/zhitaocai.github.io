@@ -110,7 +110,7 @@ date: 2016-02-22 16:07:44
 1. ``共享Gradle Property方式``：如果其他脚本中所有的task已经写好了逻辑了，就差一个开关之类的控制一些简单的逻辑，那么不妨采用这种方法
 2. ``共享自定义的Property方式``：可以很方便地和主脚本(``build.gradle``)进行交互，但是如果主脚本和其他外部脚本同时引入同一个``plugin``，那么在执行task（比如都使用了java插件，两个脚本中分别有一个任务都是依赖于``jar``）的时候，就可能会出现问题
 
-## 参考资料
+# 参考资料
 
 * [GradleBuild官方文档描述](https://docs.gradle.org/current/dsl/org.gradle.api.tasks.GradleBuild.html)
 * [StartParameter官方文档描述](https://docs.gradle.org/current/javadoc/org/gradle/StartParameter.html) 

@@ -74,6 +74,11 @@ date: 2016-02-22 16:07:44
         tasks = ['show']
         // 指定调用外部gradle的脚本的时候，该外部脚本采用的Properties参数为本项目所采用的
         startParameter.projectProperties = project.getGradle().getStartParameter().getProjectProperties()
+
+        // or 
+
+        // startParameter.projectProperties = gradle.startParameter.projectProperties
+
     } 
 ```
 

@@ -1,0 +1,811 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="hexo," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhitao Cai's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于搭建个人博客，网上已经有很多教程了，重复别人的概述显得有点浪费时间。而我在自己在搭建这个博客的时候，了解到目前大概有3种比较常用个人博客搭建方法的方法，而我所用的是GitHub&amp;amp;&amp;amp;Hexo，因此，下面我主要总结概述一下在我搭建这个博客的时候，所用到的关于GitHub&amp;amp;&amp;amp;Hexo方面参考内容，大家可以参考参考，省去从海量资料中寻找有用内容的过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的个人博客是怎么搭建的">
+<meta property="og:url" content="http://caizhitao.com/2015/07/04/set-up-blog-with-hexo/index.html">
+<meta property="og:site_name" content="Zhitao Cai's Blog">
+<meta property="og:description" content="关于搭建个人博客，网上已经有很多教程了，重复别人的概述显得有点浪费时间。而我在自己在搭建这个博客的时候，了解到目前大概有3种比较常用个人博客搭建方法的方法，而我所用的是GitHub&amp;amp;&amp;amp;Hexo，因此，下面我主要总结概述一下在我搭建这个博客的时候，所用到的关于GitHub&amp;amp;&amp;amp;Hexo方面参考内容，大家可以参考参考，省去从海量资料中寻找有用内容的过程。">
+<meta property="og:updated_time" content="2016-07-16T00:33:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的个人博客是怎么搭建的">
+<meta name="twitter:description" content="关于搭建个人博客，网上已经有很多教程了，重复别人的概述显得有点浪费时间。而我在自己在搭建这个博客的时候，了解到目前大概有3种比较常用个人博客搭建方法的方法，而我所用的是GitHub&amp;amp;&amp;amp;Hexo，因此，下面我主要总结概述一下在我搭建这个博客的时候，所用到的关于GitHub&amp;amp;&amp;amp;Hexo方面参考内容，大家可以参考参考，省去从海量资料中寻找有用内容的过程。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 我的个人博客是怎么搭建的 | Zhitao Cai's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?86b8e909fc50a5340f9c4381ad36cf46";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Zhitao Cai's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">专注成就专业，我只饮菠萝啤</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                我的个人博客是怎么搭建的
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-04T21:04:12+08:00" content="2015-07-04">
+              2015-07-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/搭建个人博客/" itemprop="url" rel="index">
+                    <span itemprop="name">搭建个人博客</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/04/set-up-blog-with-hexo/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/04/set-up-blog-with-hexo/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>关于搭建个人博客，网上已经有很多教程了，重复别人的概述显得有点浪费时间。而我在自己在搭建这个博客的时候，了解到目前大概有<a href="http://www.jintongyao.com/2014/build-a-blog-by-hexo/" target="_blank" rel="external">3种比较常用个人博客搭建方法</a>的方法，而我所用的是<strong>GitHub&amp;&amp;Hexo</strong>，因此，下面我主要总结概述一下在我搭建这个博客的时候，所用到的关于<strong>GitHub&amp;&amp;Hexo</strong>方面参考内容，大家可以参考参考，省去从海量资料中寻找有用内容的过程。</p>
+<a id="more"></a>
+<h1 id="重点知识">重点知识</h1><h2 id="如何搭建一个独立博客——简明Github_Pages与Hexo教程"><a href="http://cnfeat.com/2014/05/10/2014-05-11-how-to-build-a-blog/" target="_blank" rel="external">如何搭建一个独立博客——简明Github Pages与Hexo教程</a></h2><ol>
+<li>这是一篇十分详细的教程，先把这个过一遍有个大体的思路，然后按照文章来进行操作，不过<strong>不建议大家一开始就按照博主的描述购买域名</strong>，其实不用个人域名也可以拥有个人博客的，如果确实需要个人域名的话，建议在一切的一切之后才进行购买绑定~</li>
+<li>文章中，作者也大量引用了其他参考资料，这些引文都是好东西，不要忽略</li>
+</ol>
+<h2 id="hexo详细介绍"><a href="http://blog.lmintlcx.com/post/blog-with-hexo.html" target="_blank" rel="external">hexo详细介绍</a></h2><p>这篇文章前面一两段话可以忽略，和上一篇推荐文章的差不多，之后的内容，作者详细的概述了各个命令，插件，目录结构的说明，十分值得收藏</p>
+<h1 id="辅助参考">辅助参考</h1><h2 id="将个人域名绑定到github上"><a href="http://blog.fens.me/nodejs-enviroment/" target="_blank" rel="external">将个人域名绑定到github上</a></h2><p>如果上面的教程中，你不明白这个操作如何实现，那么可以尝试参考这篇文章，这篇在这方面讲得十分详细了</p>
+<h2 id="设置多说评论模块"><a href="http://ijiaober.github.io/2014/08/06/hexo/hexo-07/" target="_blank" rel="external">设置多说评论模块</a></h2><p>这块其实是与你的所用的主题有关的，一些主题可能会直接包含一个enable的开关，写true就会开启。<br>实际上我用的是jacman的主题，仅需要在全局配置文件<code>/_config.yml</code>中写上 <code>duoshuo_shortname: your short name</code>，就可以了。</p>
+<h2 id="从Hexo_2-x升级到3-x"><a href="https://github.com/hexojs/hexo/wiki/Migrating-from-2.x-to-3.0" target="_blank" rel="external">从Hexo 2.x升级到3.x</a></h2><h2 id="Hexo_主题库"><a href="https://github.com/hexojs/hexo/wiki/Themes" target="_blank" rel="external">Hexo 主题库</a></h2><p>总有一个适合你的</p>
+<h2 id="如何使用_Jacman_主题"><a href="http://wuchong.me/blog/2014/11/20/how-to-use-jacman/#" target="_blank" rel="external">如何使用 Jacman 主题</a></h2><p>作者是开发这个主题的大神，关于这个主题的用法在这篇文章中说得很具体了</p>
+<h1 id="问题汇总">问题汇总</h1><h2 id="Ubuntu采用apt-get方式安装nodejs_npm失败解决方案"><a href="http://blog.fens.me/nodejs-enviroment/" target="_blank" rel="external">Ubuntu采用apt-get方式安装nodejs npm失败解决方案</a></h2><p>原因：系统提示, node和npm版本不兼容。可能是终于apt-get源没有更新造成的问题。<br>解决：手动安装,参考<a href="http://blog.fens.me/nodejs-enviroment/" target="_blank" rel="external">http://blog.fens.me/nodejs-enviroment/</a></p>
+<h2 id="npm安装的时候出现_shasum_check_failed"><a href="http://www.oschina.net/question/1454207_148353" target="_blank" rel="external">npm安装的时候出现 shasum check failed</a></h2><p>原因：默认是国外的服务器，很容易出现传输过程中下载的东西受损，或者其他情况引发<br>解决：切换到国内的镜像</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="keyword">set</span> <span class="keyword">registry</span> <span class="keyword">http</span>://<span class="keyword">registry</span>.cnpmjs.org</span><br></pre></td></tr></table></figure>
+<h2 id="Hexo常见问题解决方案"><a href="http://xuanwo.org/2014/08/14/hexo-usual-problem/" target="_blank" rel="external">Hexo常见问题解决方案</a></h2><p>比较多的问题总结都在这里，可以优先在浏览器中输入 <code>Ctrl + F</code> 搜索问题关键字，看看文章中是否有解决方案</p>
+<h2 id="解决无法发布到github"><a href="http://blog.163.com/gis_warrior/blog/static/19361717320153100184696/" target="_blank" rel="external">解决无法发布到github</a></h2><p>错误提示：<code>ERR Deployer not found: github</code><br>原因：因为hexo 3.x(<code>hexo version</code>：查看当前hexo版本号)版本换了写法，而网上的教程很多是基于<strong>Hexo2.x</strong>进行编写的，因此基本都会遇到这个问题<br>解决方案：参考标题链接</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag">#hexo</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/14/android-test-introduce/" rel="prev" title="【Android单元测试系列】前言">
+                【Android单元测试系列】前言 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/07/04/set-up-blog-with-hexo/"
+     data-title="我的个人博客是怎么搭建的"
+     data-content=""
+     data-url="http://caizhitao.com/2015/07/04/set-up-blog-with-hexo/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/07/04/set-up-blog-with-hexo/"
+           data-title="我的个人博客是怎么搭建的" data-url="http://caizhitao.com/2015/07/04/set-up-blog-with-hexo/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/author.jpg"
+               alt="Zhitao Cai" />
+          <p class="site-author-name" itemprop="name">Zhitao Cai</p>
+          <p class="site-description motion-element" itemprop="description">专注成就专业，我只饮菠萝啤</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhitaocai" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/caizhitao" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Star</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">StormZhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/category/android/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/sinyu890807" target="_blank">GuoLin</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuchong.me" target="_blank">Jark</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.iissnan.com/" target="_blank">IissNan</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重点知识"><span class="nav-number">1.</span> <span class="nav-text">重点知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何搭建一个独立博客——简明Github_Pages与Hexo教程"><span class="nav-number">1.1.</span> <span class="nav-text">如何搭建一个独立博客——简明Github Pages与Hexo教程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo详细介绍"><span class="nav-number">1.2.</span> <span class="nav-text">hexo详细介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#辅助参考"><span class="nav-number">2.</span> <span class="nav-text">辅助参考</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#将个人域名绑定到github上"><span class="nav-number">2.1.</span> <span class="nav-text">将个人域名绑定到github上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置多说评论模块"><span class="nav-number">2.2.</span> <span class="nav-text">设置多说评论模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从Hexo_2-x升级到3-x"><span class="nav-number">2.3.</span> <span class="nav-text">从Hexo 2.x升级到3.x</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo_主题库"><span class="nav-number">2.4.</span> <span class="nav-text">Hexo 主题库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用_Jacman_主题"><span class="nav-number">2.5.</span> <span class="nav-text">如何使用 Jacman 主题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题汇总"><span class="nav-number">3.</span> <span class="nav-text">问题汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu采用apt-get方式安装nodejs_npm失败解决方案"><span class="nav-number">3.1.</span> <span class="nav-text">Ubuntu采用apt-get方式安装nodejs npm失败解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npm安装的时候出现_shasum_check_failed"><span class="nav-number">3.2.</span> <span class="nav-text">npm安装的时候出现 shasum check failed</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo常见问题解决方案"><span class="nav-number">3.3.</span> <span class="nav-text">Hexo常见问题解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决无法发布到github"><span class="nav-number">3.4.</span> <span class="nav-text">解决无法发布到github</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhitao Cai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      //if (CONFIG.sidebar === 'post') {
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"caizhitao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

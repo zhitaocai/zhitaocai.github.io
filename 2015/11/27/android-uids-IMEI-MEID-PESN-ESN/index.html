@@ -1,0 +1,908 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android UIDS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhitao Cai's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+
+
+
+<meta name="description" content="你应该需要知道的Android设备标识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Android设备信息】IMEI、MEID、PESN、ESN">
+<meta property="og:url" content="http://caizhitao.com/2015/11/27/android-uids-IMEI-MEID-PESN-ESN/index.html">
+<meta property="og:site_name" content="Zhitao Cai's Blog">
+<meta property="og:description" content="你应该需要知道的Android设备标识。">
+<meta property="og:updated_time" content="2016-07-16T00:33:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Android设备信息】IMEI、MEID、PESN、ESN">
+<meta name="twitter:description" content="你应该需要知道的Android设备标识。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 【Android设备信息】IMEI、MEID、PESN、ESN | Zhitao Cai's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?86b8e909fc50a5340f9c4381ad36cf46";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Zhitao Cai's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">专注成就专业，我只饮菠萝啤</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                【Android设备信息】IMEI、MEID、PESN、ESN
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-11-27T15:29:55+08:00" content="2015-11-27">
+              2015-11-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-Develop/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Develop</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/27/android-uids-IMEI-MEID-PESN-ESN/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/27/android-uids-IMEI-MEID-PESN-ESN/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>你应该需要知道的Android设备标识。<br><a id="more"></a></p>
+<h1 id="IMEI">IMEI</h1><h2 id="定义">定义</h2><p>IMEI(International Mobile Equipment Identity)：国际移动通讯设备识别号的缩写，由15位数字组成，主要用于<strong>GSM</strong>系统，因此与每台移动/联通手机一一对应，而且该码是全世界唯一的。每一部手机在组装完成后都将被赋予一个全球唯一的一组号码，这个号码从生产到交付使用都将被制造生产的厂商所记录。<strong>移动/联通上可以通过在拨号键盘上输入*#06#进行查询imei</strong>。</p>
+<h2 id="组成">组成</h2><p>IMEI由15位数字组成，其组成为：<code>IMEI = TAC + FAC + SNR + SP</code></p>
+<ul>
+<li><code>TAC</code>(TYPE APPROVAL CODE)：IMEI前6位，<strong>标识型号核准号码，一般代表机型</strong>。由欧洲型号认证中心分配。TAC码前三位在不同的时期会发生变化，过去的TAC码前三位在现在的手机上不会出现</li>
+<li><code>FAC</code>(FAC-Final Assembly Code)：IMEI第7位到第8位，<strong>标识最后装配号，一般代表产地</strong>，由厂家编码，通常表示生产厂家及其装配地。也就是我们说的行货认证 </li>
+<li><code>SNR</code>(Serial Number)：IMEI第9位到第14位，<strong>标识串号，一般代表生产顺序号</strong>，也由厂家分配。识别每个TAC和FAC中的某个设备的。每一部手机的SNR都不会一样．简单的说该号码可以说明手机出产日期的先后，通常数值越大说明该机型出厂时间越晚，所以如果一部刚上市不久的手机的IMEI上出现了6位的数字你就得小心了，因为刚上市不久的手机其SNR最多不会超过四位，大家可以在购机时留意一下。也许这可以作为鉴别手机是否被JS修改IMEI的好办法之一。</li>
+<li><code>SP</code>：IMEI第15位，<strong>检验码</strong>，过去通常为0，现在市面上的手机基本都会由厂家进行配置这个校验码</li>
+</ul>
+<h2 id="获取方法">获取方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 获取IMEI</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getIMEI</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">        <span class="keyword">if</span> (TelephonyManager.PHONE_TYPE_GSM == telephonyManager.getPhoneType()) &#123;</span><br><span class="line">            <span class="keyword">return</span> telephonyManager.getDeviceId();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="扩展">扩展</h2><h3 id="17位IMEI">17位IMEI</h3><p><strong>有些手机在IMEI上做了自己的定义，如：爱立信手机，三星V200在待机时输入*#06#就会出现17位的IMEI，而最后两位的主要作用是用来识别软件版本，一般来说数值越低版本也越低</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 获取IMEI的版本号</span><br><span class="line"> * 部分GSM手机上拨号键盘输入*#06#之后会出现的IMEI/SV(software version)</span><br><span class="line"> * 一般在三星的手机上输入*#06#最后会出现15位IMEI + "/01"的内容，后面的就是描述软件版本号的</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getIMEISV</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">        <span class="keyword">if</span> (TelephonyManager.PHONE_TYPE_GSM == telephonyManager.getPhoneType()) &#123;</span><br><span class="line">            <span class="keyword">return</span> telephonyManager.getDeviceSoftwareVersion();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="两个IMEI">两个IMEI</h3><p><strong>双卡双待的手机有两个通讯芯片，相当于2个手机装在一个手机壳里面，每个通讯芯片都需要有IMEI标识，于是输入*#06#之后</strong></p>
+<ol>
+<li>可能会显示2个IMEI</li>
+<li>可能会显示1个IMEI</li>
+<li>可能会显示1个MEID</li>
+<li>可能会显示2个MEID</li>
+<li>可能会显示1个IMEI+1个MEID</li>
+</ol>
+<p>但是上面的获取方法只能获取1个，如果是2个以上的话，剩下那个需要其他方法才能获取到</p>
+<h3 id="IMEI校验">IMEI校验</h3><ul>
+<li>尽管imei定义可以理解为每台手机唯一，但是实际上很容易被改，安装了Xposted(目前好像在Android 5.x以上系统不好使)框架，然后安装Xprivacy就可以轻松替换imei</li>
+<li>可以通过校验算法进行一次校验，过滤一些小白随便起的imei</li>
+<li>最好不要通过长度进行判断imei是否有效</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">IMEI 校验算法(SP计算方法):</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>. 分别取偶数位*<span class="number">2</span>，得出<span class="number">7</span>组结果</span><br><span class="line"><span class="number">2</span>. 针对这<span class="number">7</span>组结果，每组进行（十位数数字 + 个位数数字)，得出新的<span class="number">7</span>组结果，将这<span class="number">7</span>组结果相加得出和<span class="number">1</span></span><br><span class="line"><span class="number">3</span>. 取imei中的所有奇数位数字（<span class="number">7</span>个），全部相加得出和<span class="number">2</span></span><br><span class="line"><span class="number">4</span>. 和<span class="number">1</span> + 和<span class="number">2</span> 得出结果，如果结果的个位数数字是<span class="number">0</span>，那么校验码就为<span class="number">0</span>，否则用<span class="number">10</span>减去个位数数字即可以得出校验码</span><br><span class="line"></span><br><span class="line">e.g.</span><br><span class="line"></span><br><span class="line">imei: <span class="number">35</span> <span class="number">89</span> <span class="number">01</span> <span class="number">80</span> <span class="number">69</span> <span class="number">72</span> <span class="number">41</span> <span class="number">7</span>(最后这个<span class="number">7</span>为我们要计算出来的)</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>. 偶数位乘以<span class="number">2</span>得到<span class="number">5</span>*<span class="number">2</span>=<span class="number">10</span> <span class="number">9</span>*<span class="number">2</span>=<span class="number">18</span> <span class="number">1</span>*<span class="number">2</span>=<span class="number">02</span> <span class="number">0</span>*<span class="number">2</span>=<span class="number">00</span> <span class="number">9</span>*<span class="number">2</span>=<span class="number">18</span> <span class="number">2</span>*<span class="number">2</span>=<span class="number">04</span> <span class="number">1</span>*<span class="number">2</span>=<span class="number">02</span></span><br><span class="line"><span class="number">2</span>. 计算和<span class="number">1</span>：(<span class="number">1</span>+<span class="number">0</span>)+(<span class="number">1</span>+<span class="number">8</span>)+(<span class="number">0</span>+<span class="number">2</span>)+(<span class="number">0</span>+<span class="number">0</span>)+(<span class="number">1</span>+<span class="number">8</span>)+(<span class="number">0</span>+<span class="number">4</span>)+(<span class="number">0</span>+<span class="number">2</span>)=<span class="number">27</span></span><br><span class="line"><span class="number">3</span>. 计算和<span class="number">2</span>：<span class="number">3</span>+<span class="number">8</span>+<span class="number">0</span>+<span class="number">8</span>+<span class="number">6</span>+<span class="number">7</span>+<span class="number">4</span> = <span class="number">36</span></span><br><span class="line"><span class="number">4</span>. <span class="number">36</span>+<span class="number">27</span> = <span class="number">63</span> 校验码为 <span class="number">10</span>-<span class="number">3</span> = <span class="number">7</span>.</span><br><span class="line"></span><br><span class="line">加上校验码的最终imei：<span class="number">35</span> <span class="number">89</span> <span class="number">01</span> <span class="number">80</span> <span class="number">69</span> <span class="number">72</span> <span class="number">41</span> <span class="number">7</span></span><br></pre></td></tr></table></figure>
+<h1 id="MEID">MEID</h1><h2 id="定义-1">定义</h2><p>MEID(Mobile Equipment Identifier)：移动设备识别码是CDMA手机的身份识别码，也是每台CDMA手机或通讯平板唯一的识别码。通过这个识别码，网络端可以对该手机进行跟踪和监管。<strong>主要用于CDMA制式的手机</strong>。MEID的数字范围是十六进制的，和IMEI的格式类似。<strong>一般为电信的手机，同样可以通过在拨号键盘上输入*#06#进行查询</strong></p>
+<h2 id="组成-1">组成</h2><p>MEID，56bits，由14个十六进制字符标识，<code>MEID = 区域码（前2位）+生厂商编号（接着6位） + 串号（接着6位） + 校验位（最后一位）</code>，其中，校验位不参与空中传输。</p>
+<table>
+<thead>
+<tr>
+<th>Regional code</th>
+<th>Manufacturer code</th>
+<th>Serial number</th>
+<th>CD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RR</td>
+<td>XXXXXX</td>
+<td>ZZZZZZ</td>
+<td>C</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RR</td>
+<td>开头的0xA表示CDMA手机，如果是0x9, 就表示多模手机，一般特指双卡双待。</td>
+</tr>
+<tr>
+<td>XXXXXX</td>
+<td>范围 000000-FFFFFF，由官方分配，厂商生产编号</td>
+</tr>
+<tr>
+<td>ZZZZZZ</td>
+<td>范围 000000-FFFFFF，厂商分配给每台终端的流水号</td>
+</tr>
+<tr>
+<td>CD</td>
+<td>0-F，校验码</td>
+</tr>
+</tbody>
+</table>
+<h2 id="获取方法-1">获取方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getMEID</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">        <span class="keyword">if</span> (TelephonyManager.PHONE_TYPE_CDMA == telephonyManager.getPhoneType()) &#123;</span><br><span class="line">            <span class="keyword">return</span> telephonyManager.getDeviceId();  </span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="扩展-1">扩展</h2><ul>
+<li><strong>MEID理论上是14位（不包括校验位）的长度，但是有些机子会是16位（不包括校验位）的长度，<code>典型的例子：14位的MEID：0xA0，16位的MEID：0x00A0</code>，为了统一，可以直接截取后面14位作为最后的MEID</strong></li>
+<li>MEID的申请，是需要付费的。价格是每1M范围的MEID的费用是8000美元，每增加1M范围的MEID号码需要额外付费8000美元</li>
+<li>MEID号码是由Telecommunications Industry Association（TIA）进行分配管理的</li>
+<li>MEID号码的查看，没有一个通用的方法，由各手机制造商自己设置。可以通过查看手机说明书得到查看MEID号码的方法</li>
+<li>MEID校验算法：<ol>
+<li>将MEID偶数位数字分别乘以2，得到的7组结果</li>
+<li>针对这7组结果，每组进行（十位数数字 + 个位数数字)，得出新的7组结果，将这7组结果相加得出和1</li>
+<li>将MEID奇数位数字相加得到和2</li>
+<li>和1 +和2，如果得出的数个位是0，则校验位为0，否则为10(这里的10是16进制)减去个位数<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">MEID</span>: <span class="string">AF 01 23 45 0A BC DE C(最后这个C为我们要计算出来的)</span></span><br><span class="line"></span><br><span class="line"><span class="mathematica"><span class="number">1.</span> 偶数位乘以<span class="number">2</span>得到各组结果:F*<span class="number">2</span>=<span class="number">1</span><span class="keyword">E</span>,<span class="number">1</span>*<span class="number">2</span>=<span class="number">02</span>,<span class="number">3</span>*<span class="number">2</span>=<span class="number">06</span>,<span class="number">5</span>*<span class="number">2</span>=<span class="number">0</span>A,A*<span class="number">2</span>=<span class="number">14</span>,<span class="keyword">C</span>*<span class="number">2</span>=<span class="number">18</span>,<span class="keyword">E</span>*<span class="number">2</span>=<span class="number">1</span><span class="keyword">C</span></span><br><span class="line"><span class="number">2.</span> 计算上面各组结果的个位数和十位数之和得出和<span class="number">1</span>:(<span class="number">1</span>+<span class="keyword">E</span>)+(<span class="number">0</span>+<span class="number">2</span>)+(<span class="number">0</span>+<span class="number">6</span>)+(<span class="number">0</span>+A)+(<span class="number">1</span>+<span class="number">4</span>)+(<span class="number">1</span>+<span class="number">8</span>)+(<span class="number">1</span>+<span class="keyword">C</span>)=<span class="number">3</span><span class="keyword">C</span>(<span class="number">16</span>进制下)</span><br><span class="line"><span class="number">3.</span> 将原始MEID的奇数位相加得出和<span class="number">2</span>:A+<span class="number">0</span>+<span class="number">2</span>+<span class="number">4</span>+<span class="number">0</span>+B+<span class="keyword">D</span>=<span class="number">28</span>(<span class="number">16</span>进制下)</span><br><span class="line"><span class="number">4.</span> 和<span class="number">1</span>+和<span class="number">2</span>:<span class="number">3</span><span class="keyword">C</span>+<span class="number">28</span>=<span class="number">64</span>(<span class="number">16</span>进制下)，于是最终检验位<span class="number">10</span>-<span class="number">4</span>=<span class="keyword">C</span></span><br><span class="line"></span><br><span class="line">加上校验码的最终MEID：AF <span class="number">01</span> <span class="number">23</span> <span class="number">45</span> <span class="number">0</span>A BC DE <span class="keyword">C</span></span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="ESN/pESN">ESN/pESN</h1><h2 id="定义-2">定义</h2><p>ESN(Electronic Serial Numbers)：电子序列号。在CDMA 系统中，是鉴别一个物理硬件设备唯一的标识。也就是说每个手机都用这个唯一的ID来鉴别自己, 就跟人的身份证一样。<strong>一个ESN有32 bits</strong>, 随着CDMA移动设别的增多，ESN已经不够用了，所以推出了位数更多的MEID。<strong>ESN用8位的16进制来表示，如0x801EA066。</strong></p>
+<p>pESN(pseudo ESN):伪ESN。pESN的推出是为了解决前向兼容的问题，<strong>pESN的格式与ESN是完全一样的，唯一的区别是pESN是采用0x80开头的</strong>。将MEID转为pESN，就可以在支持ESN的C网内正常使用。</p>
+<h2 id="扩展-2">扩展</h2><ul>
+<li>MEID转化为pESN具体的方法是，56 bits的MEID通过SHA-1 hash算法，挑出后6位，然后在开头加上0x80。<strong>pESN并不是唯一的，是可能会重复的，但pESN不会跟ESN重复，因为开头强制加了0x80</strong>；java中提供了MessageDigest这个类来实现了一系列的hash算法，可以通过调用该类来进行运算，计算过程中注意byte和hexstring之间的转换即可。</li>
+<li>一个手机只能有一个ESN或一个MEID。如6800、6900均是ESN码；但6950开始就采用MEID码了。</li>
+<li>带ESN或MEID码的手机都可以支持ESN的CDMA网络内正常使用，而ESN码的手机不能在只支持MEID的CDMA网络内使用。</li>
+<li>目前中国电信的C网应该已经开始采用MEID鉴权了，从2005年开始MEID开始替换ESN。</li>
+</ul>
+<h1 id="总结">总结</h1><ul>
+<li>CDMA系统上，我们叫MEID，GSM系统上，我们叫IMEI</li>
+<li><strong>正常情况下</strong>，手机上我们获取到<code>14位MEID</code>，或者<code>15位IMEI</code></li>
+</ul>
+<h1 id="参考资料">参考资料</h1><ul>
+<li><a href="http://www.cnblogs.com/flyme/p/3317013.html" target="_blank" rel="external">http://www.cnblogs.com/flyme/p/3317013.html</a></li>
+<li><a href="http://my.oschina.net/adairs/blog/418954?fromerr=9LQoQQpv" target="_blank" rel="external">http://my.oschina.net/adairs/blog/418954?fromerr=9LQoQQpv</a></li>
+<li><a href="http://www.miui.com/article-336-1.html" target="_blank" rel="external">http://www.miui.com/article-336-1.html</a></li>
+<li><a href="http://www.lainzy.net/post/157.html" target="_blank" rel="external">http://www.lainzy.net/post/157.html</a></li>
+<li><a href="http://baike.baidu.com/view/2823315.htm" target="_blank" rel="external">http://baike.baidu.com/view/2823315.htm</a></li>
+<li>[扩展]<a href="http://wenku.baidu.com/view/9aed75f37c1cfad6195fa70e.html" target="_blank" rel="external">http://wenku.baidu.com/view/9aed75f37c1cfad6195fa70e.html</a> </li>
+<li>[扩展]<a href="http://www.docin.com/p-555856641.html" target="_blank" rel="external">http://www.docin.com/p-555856641.html</a></li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-UIDS/" rel="tag">#Android UIDS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/29/get-top-package-name/" rel="next" title="获取当前顶端包名【兼容所有系统】">
+                <i class="fa fa-chevron-left"></i> 获取当前顶端包名【兼容所有系统】
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/01/android-uids-IMSI-ICCID-KI/" rel="prev" title="【Android设备信息】IMSI、ICCID、KI">
+                【Android设备信息】IMSI、ICCID、KI <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/11/27/android-uids-IMEI-MEID-PESN-ESN/"
+     data-title="【Android设备信息】IMEI、MEID、PESN、ESN"
+     data-content=""
+     data-url="http://caizhitao.com/2015/11/27/android-uids-IMEI-MEID-PESN-ESN/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/11/27/android-uids-IMEI-MEID-PESN-ESN/"
+           data-title="【Android设备信息】IMEI、MEID、PESN、ESN" data-url="http://caizhitao.com/2015/11/27/android-uids-IMEI-MEID-PESN-ESN/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/author.jpg"
+               alt="Zhitao Cai" />
+          <p class="site-author-name" itemprop="name">Zhitao Cai</p>
+          <p class="site-description motion-element" itemprop="description">专注成就专业，我只饮菠萝啤</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhitaocai" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/caizhitao" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Star</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">StormZhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/category/android/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/sinyu890807" target="_blank">GuoLin</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuchong.me" target="_blank">Jark</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.iissnan.com/" target="_blank">IissNan</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IMEI"><span class="nav-number">1.</span> <span class="nav-text">IMEI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组成"><span class="nav-number">1.2.</span> <span class="nav-text">组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取方法"><span class="nav-number">1.3.</span> <span class="nav-text">获取方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.4.</span> <span class="nav-text">扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#17位IMEI"><span class="nav-number">1.4.1.</span> <span class="nav-text">17位IMEI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两个IMEI"><span class="nav-number">1.4.2.</span> <span class="nav-text">两个IMEI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IMEI校验"><span class="nav-number">1.4.3.</span> <span class="nav-text">IMEI校验</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MEID"><span class="nav-number">2.</span> <span class="nav-text">MEID</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-1"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组成-1"><span class="nav-number">2.2.</span> <span class="nav-text">组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取方法-1"><span class="nav-number">2.3.</span> <span class="nav-text">获取方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展-1"><span class="nav-number">2.4.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ESN/pESN"><span class="nav-number">3.</span> <span class="nav-text">ESN/pESN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-2"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展-2"><span class="nav-number">3.2.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhitao Cai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      //if (CONFIG.sidebar === 'post') {
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"caizhitao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

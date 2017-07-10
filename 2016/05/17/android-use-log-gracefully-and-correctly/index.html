@@ -1,0 +1,858 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhitao Cai's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文详细描述了如何采用优雅的姿势并且正确地使用log">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何优雅正确地使用Log">
+<meta property="og:url" content="http://caizhitao.com/2016/05/17/android-use-log-gracefully-and-correctly/index.html">
+<meta property="og:site_name" content="Zhitao Cai's Blog">
+<meta property="og:description" content="本文详细描述了如何采用优雅的姿势并且正确地使用log">
+<meta property="og:image" content="http://caizhitao.com/img/Momentum/201605170820.jpg">
+<meta property="og:image" content="http://caizhitao.com/img/android/log/DLogPreview.png">
+<meta property="og:image" content="http://caizhitao.com/img/android/log/proguard-android-txt-part.png">
+<meta property="og:image" content="http://caizhitao.com/img/android/log/BuildConfig_vs_Proguard.png">
+<meta property="og:image" content="http://caizhitao.com/img/android/log/proguard-android-optimize-txt-part.png">
+<meta property="og:updated_time" content="2016-07-16T00:33:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何优雅正确地使用Log">
+<meta name="twitter:description" content="本文详细描述了如何采用优雅的姿势并且正确地使用log">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 如何优雅正确地使用Log | Zhitao Cai's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?86b8e909fc50a5340f9c4381ad36cf46";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Zhitao Cai's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">专注成就专业，我只饮菠萝啤</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何优雅正确地使用Log
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-17T08:15:45+08:00" content="2016-05-17">
+              2016-05-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-Develop/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Develop</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/17/android-use-log-gracefully-and-correctly/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/17/android-use-log-gracefully-and-correctly/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/img/Momentum/201605170820.jpg" alt=""></p>
+<p>本文详细描述了如何采用优雅的姿势并且正确地使用log<br><a id="more"></a></p>
+<h1 id="原生的Android_Log使用">原生的Android Log使用</h1><p>像下面这样子的Log，大家都会用<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Log</span>.<span class="literal">i</span>(<span class="string">"test"</span>, <span class="string">"hello world"</span>);</span><br><span class="line"><span class="keyword">Log</span>.<span class="literal">i</span>(<span class="string">"test"</span>, <span class="string">"hello world "</span> + 1);</span><br><span class="line"><span class="keyword">Log</span>.<span class="literal">i</span>(<span class="string">"test"</span>, <span class="string">"hello world "</span>, new Exception(<span class="string">"test"</span>));</span><br></pre></td></tr></table></figure></p>
+<h2 id="原生Android_Log的语句不够优雅">原生Android Log的语句不够优雅</h2><p>使用原生Android Log过程中，难免会发现上面的原生Log，用多了，会感觉用得很累，就比如这样子的Log:</p>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">long startTime = System.currentTimeMillis<span class="params">()</span>;</span><br><span class="line"><span class="comment">// ......</span></span><br><span class="line">long endTime = System.currentTimeMillis<span class="params">()</span>;</span><br><span class="line">Log.i<span class="params">(<span class="string">"test"</span>, <span class="string">"Strart Time: "</span> + startTime + <span class="string">"\nEnd Time: "</span> + endTime + <span class="string">"\nTotal Time: "</span> + <span class="params">(endTime - startTime)</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>这种log，先不说写的时候多麻烦，单纯看上去就觉得很累，必须要看完整句才大概知道这个Log的含义，<strong>因为一句话被拆分了，中间穿插着不同的参数</strong>，自然而然，为了优雅，大家都可能会想到用<code>String.format()</code>方法来进行优雅一点的输出：</p>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">long startTime = System.currentTimeMillis<span class="params">()</span>;</span><br><span class="line"><span class="comment">// ......</span></span><br><span class="line">long endTime = System.currentTimeMillis<span class="params">()</span>;</span><br><span class="line">Log.i<span class="params">(<span class="string">"test"</span>, String.format<span class="params">(<span class="string">"Strart Time: %d\nEndTime: %d\nTotalTime: %d"</span>, startTime, endTime, endTime - startTime)</span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="原生的Android_Log并不能很好地输出详细的信息">原生的Android Log并不能很好地输出详细的信息</h2><p>使用原生的Android Log，除非是输出异常的Log，否则是不会详细显示Log的调用信息的，简单来说，我要知道某句正常的Log是在哪里被调用的（比如你接手别人的项目的时候，输出一大堆不知道写在哪里的Log），那么原生的AndroidLog是不支持的，那么我们就要在自己动手一下</p>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出log的详细调用信息</span></span><br><span class="line">try &#123;</span><br><span class="line">    StackTraceElement[] elements = Thread.currentThread<span class="params">()</span>.getStackTrace<span class="params">()</span>;</span><br><span class="line">    <span class="keyword">if</span> <span class="params">(elements.length &gt; <span class="number">5</span>)</span> &#123;</span><br><span class="line">        StackTraceElement element = elements[<span class="number">5</span>];</span><br><span class="line">        String txt = String.format<span class="params">(<span class="string">"FileName:[ %s ] Method:( %s )  Line:( %d )"</span>, element.getFileName<span class="params">()</span>, element.getMethodName<span class="params">()</span>, element.getLineNumber<span class="params">()</span>)</span>;</span><br><span class="line">        Log.i<span class="params">(tag, txt)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; catch <span class="params">(Throwable e)</span> &#123;</span><br><span class="line">    e.printStackTrace<span class="params">()</span>;</span><br><span class="line">&lt;F11&gt;&lt;F11&gt;&lt;F11&gt;&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="封装自己的Log">封装自己的Log</h1><p>基于上面点，我这边自己动手封装一个DLog，概览如下(具体代码请点击<a href="https://github.com/zhitaocai/DLog" target="_blank" rel="external">这里</a>)：</p>
+<p><img src="/img/android/log/DLogPreview.png" alt=""></p>
+<h1 id="优雅地控制Log输出">优雅地控制Log输出</h1><p>实际项目开发中，我们当然是希望调试的Log在我们开发测试的时候才进行输出，在发布的版本中不进行输出</p>
+<p>为什么?</p>
+<ol>
+<li>如果你的调试Log在发布版本中也存在，那么apk的体积肯定是变大的</li>
+<li>如果你的调试Log在发布版本中也存在，那么apk被心怀恶意的人反编译破解的时候，Log的输出就是很好的切入点，能极大地帮助他们理解你的代码</li>
+</ol>
+<p><strong>总结下来，我们需要的就是一个开关，在我们开发测试的时候，开启Log，在我们发布的时候，关闭Log</strong></p>
+<h2 id="使用BuildConfig来控制Log输出">使用BuildConfig来控制Log输出</h2><p>Setp 1: 配置项目Module的build.gradle</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">buildTypes &#123;</span><br><span class="line">    debug &#123;</span><br><span class="line">        buildConfigField <span class="string">"boolean"</span>, <span class="string">"ISDEBUG"</span>, <span class="string">"true"</span></span><br><span class="line">    &#125;</span><br><span class="line">    release &#123;</span><br><span class="line">        buildConfigField <span class="string">"boolean"</span>, <span class="string">"ISDEBUG"</span>, <span class="string">"false"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Setp 2: 在java代码中如下使用即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (BuildConfig.ISDEBUG) &#123;</span><br><span class="line">    DLog.i(<span class="string">"test"</span>, <span class="string">"test"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>构建release版本，BuildConfig中的ISDEBUG参数就会是false，那么if就永远跑不进去，那么就不会将Log的代码打包到apk中，同理，构建debug版本时，则会输出log</strong></p>
+<h2 id="使用Proguard来控制Log输出">使用Proguard来控制Log输出</h2><p>Setp 1: 将自己使用的封装Log类写入到混淆配置(我这里为proguard-rules.pro)：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 删除代码中DLog相关的代码</span><br><span class="line">-assumenosideeffects <span class="class"><span class="keyword">class</span> <span class="title">io</span>.<span class="title">github</span>.<span class="title">zhitaocai</span>.<span class="title">dlog</span>.<span class="title">DLog</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">i</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">e</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">w</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">v</span><span class="params">(...)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ti</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">te</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">td</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">tw</span><span class="params">(...)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">tv</span><span class="params">(...)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Setp 2: 开启混淆优化：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">buildTypes &#123;</span><br><span class="line">    release &#123;</span><br><span class="line">        minifyEnabled <span class="keyword">true</span>      <span class="comment">// 开启混淆</span></span><br><span class="line">        signingConfig signingConfigs.release</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 注意是用proguard-android-optimize.txt而不是proguard-android.txt</span></span><br><span class="line">        proguardFiles getDefaultProguardFile(<span class="string">'proguard-android-optimize.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Setp 3: java代码中使用的Log如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DLog.i(<span class="string">"test"</span>, <span class="string">"test"</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>解释说明:</strong></p>
+<blockquote>
+<p><code>-assumenosideeffects class_specification:</code> Specifies methods that don’t have any side effects (other than maybe returning a value). In the optimization step, ProGuard will then remove calls to such methods, if it can determine that the return values aren’t used. ProGuard will analyze your program code to find such methods automatically. It will not analyze library code, for which this option can therefore be useful. For example, you could specify the method System.currentTimeMillis(), so that any idle calls to it will be removed. With some care, you can also use the option to remove logging code. Note that ProGuard applies the option to the entire hierarchy of the specified methods. Only applicable when optimizing. In general, making assumptions can be dangerous; you can easily break the processed code. Only use this option if you know what you’re doing!</p>
+</blockquote>
+<ol>
+<li><code>assumenosideeffects</code> ： 可以理解为假设某个东西无效，那么混淆（具体为优化阶段）之后就会将这里面假定无效的类移除，从而达到不输出Log的效果</li>
+<li>正如说明，要令assumenosideeffects生效，就需要开启混淆 </li>
+<li>正如说明，要令assumenosideeffects生效，就需要开启混淆中的优化选项，而默认的proguard-android.txt是不会开启优化选项的 <img src="/img/android/log/proguard-android-txt-part.png" alt=""> 并且，从上面 proguard-android.txt 部分内容截图中，我们可以知道，如果我们需要开启混淆的话，那么是建议我们采用<strong>proguard-android-optimize.txt</strong>，那么就可以解释为什么我们Setp 2需要采用 <code>proguard-android-optimize.txt</code> 作为Android的默认混淆配置了</li>
+</ol>
+<h2 id="比较">比较</h2><h3 id="测试代码">测试代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String DOWNLOAD_TAG = <span class="string">"download_"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">	<span class="annotation">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">		setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 正常的Android Log 封装使用</span></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======华丽分割线1======="</span>);</span><br><span class="line">		DLog.i(<span class="string">"test"</span>, <span class="string">"下载测试: 1"</span>);</span><br><span class="line">		DLog.d(<span class="string">"test"</span>, <span class="string">"下载测试: "</span> + <span class="number">2</span>);</span><br><span class="line">		DLog.w(<span class="string">"test"</span>, <span class="string">"下载测试: %d"</span>, <span class="number">3</span>);</span><br><span class="line">		DLog.e(<span class="string">"test"</span>, <span class="keyword">new</span> Exception(<span class="string">"测试的Exception"</span>), <span class="string">"下载测试: 4"</span>);</span><br><span class="line">		DLog.v(<span class="string">"test"</span>, <span class="keyword">new</span> Exception(<span class="string">"测试的Exception"</span>), <span class="string">"下载测试: %d"</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======华丽分割线2======="</span>);</span><br><span class="line">		<span class="comment">// 支持指定前缀tag（方便给tag分类）以及可以指定具体调用类的Log方式</span></span><br><span class="line">		DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 1"</span>);</span><br><span class="line">		DLog.td(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 "</span> + <span class="number">2</span>);</span><br><span class="line">		DLog.tw(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 %d"</span>, <span class="number">3</span>);</span><br><span class="line">		DLog.te(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="keyword">new</span> Exception(<span class="string">"测试的Exception"</span>), <span class="string">"下载测试 4"</span>);</span><br><span class="line">		DLog.tv(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="keyword">new</span> Exception(<span class="string">"测试的Exception"</span>), <span class="string">"下载测试 %d"</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======采用Proguard控制Log输出======="</span>);</span><br><span class="line">		proguardLogTest();</span><br><span class="line"></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======采用BuildConfig控制Log输出======="</span>);</span><br><span class="line">		BuildConfigLogTest();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">proguardLogTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 测试1: log输出中使用方法</span></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======proguard 1======="</span>);</span><br><span class="line">		<span class="keyword">byte</span>[] input = <span class="keyword">new</span> <span class="keyword">byte</span>[] &#123; <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line">		DLog.i(<span class="string">"network"</span>, <span class="string">"加密byte数组: %s"</span>, formatByte2String(input));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 测试2: log输出中使用方法，并且该方法中和其他存在关联</span></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======proguard 2======="</span>);</span><br><span class="line">		DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 %d"</span>, incrementI());</span><br><span class="line">		DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 %d"</span>, incrementI());</span><br><span class="line">		DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 %d"</span>, incrementI());</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 测试3: 外部先构建好一个对象，然后输出该对象的toString</span></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======proguard 3======="</span>);</span><br><span class="line">		TestModel testModel = <span class="keyword">new</span> TestModel(<span class="string">"下载测试 1000"</span>);</span><br><span class="line">		DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, testModel.toString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">BuildConfigLogTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 测试1: log输出中使用方法</span></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======proguard 1======="</span>);</span><br><span class="line">		<span class="keyword">byte</span>[] input = <span class="keyword">new</span> <span class="keyword">byte</span>[] &#123; <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line">		<span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</span><br><span class="line">			DLog.i(<span class="string">"network"</span>, <span class="string">"加密byte数组: %s"</span>, formatByte2String(input));</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 测试2: log输出中使用方法，并且该方法中和其他存在关联</span></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======proguard 2======="</span>);</span><br><span class="line">		<span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</span><br><span class="line">			DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 %d"</span>, incrementI());</span><br><span class="line">			DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 %d"</span>, incrementI());</span><br><span class="line">			DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, <span class="string">"下载测试 %d"</span>, incrementI());</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 测试3: 外部先构建好一个对象，然后输出该对象的toString</span></span><br><span class="line">		Log.i(<span class="string">"aaaaa"</span>, <span class="string">"=======proguard 3======="</span>);</span><br><span class="line">		TestModel testModel = <span class="keyword">new</span> TestModel(<span class="string">"下载测试 1000"</span>);</span><br><span class="line">		<span class="keyword">if</span> (BuildConfig.DEBUG) &#123;</span><br><span class="line">			DLog.ti(DOWNLOAD_TAG, <span class="keyword">this</span>, testModel.toString());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span><br><span class="line">	 * 假设这个方法为将byte数组加密成Base64(对应于实际场合中的，和服务器联调测试时，解密网络请求中返回的数据时用)</span><br><span class="line">	 *</span><br><span class="line">	 * <span class="doctag">@return</span> encodeString</span><br><span class="line">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">formatByte2String</span><span class="params">(<span class="keyword">byte</span>[] input)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Base64.encodeToString(input, Base64.NO_WRAP);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">incrementI</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ++i;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TestModel</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">protected</span> String mTest;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">TestModel</span><span class="params">(String test)</span> </span>&#123;</span><br><span class="line">			mTest = test;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="annotation">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">final</span> StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="string">"TestModel &#123;\n"</span>);</span><br><span class="line">			sb.append(<span class="string">"  mTest=\""</span>).append(mTest).append(<span class="string">'\"'</span>).append(<span class="string">"\n"</span>);</span><br><span class="line">			sb.append(<span class="string">'&#125;'</span>);</span><br><span class="line">			<span class="keyword">return</span> sb.toString();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="反编译结果">反编译结果</h3><p><img src="/img/android/log/BuildConfig_vs_Proguard.png" alt=""></p>
+<h3 id="结论">结论</h3><ul>
+<li>BuildConfig<ul>
+<li>Log输出时，如果DLog.i中的传入参数是一些方法的返回值或者自定义对象的某些方法诸如此类的依赖值，那么用BuildConfig这种方法时，是连这个方法或者自定义对象的方法都不会执行，完成优化掉，减少apk体积同时也优化运行速度（因为不用在调用这些方法）</li>
+<li>缺陷就是使用的时候比较麻烦，不断写<code>if(BuildConfig.ISDEBUG) {...}</code>，比较麻烦</li>
+</ul>
+</li>
+<li>Proguard<ul>
+<li>Log输出时，如果DLog.i中的传入参数是一些方法的返回值或者自定义对象的某些方法诸如此类的依赖值，那么用Proguard这种方法时，仅仅是会不输出Log，但是，Log传入参数所依赖的方法或者自定义对象的方法是会执行的，不能很好优化掉，并且你还要确定，这部分还继续被执行的代码是否可以真的继续执行</li>
+<li>其实采用这种方法还是有一点弊端的样子，在 <code>proguard-android-optimize.txt</code> 文件中存在一段话: <img src="/img/android/log/proguard-android-optimize-txt-part.png" alt=""> <strong>混淆时，开启优化选项存在风险</strong></li>
+<li>优点：可以直接调用DLog.i()进行打log，而不用像BuildConfig那样子，每次打Log之前都需要if一下</li>
+</ul>
+</li>
+</ul>
+<p><strong>Any Way, 最终结论是建议大家使用BuildConfig的方法控制Log开关，使用Proguard的方法来控制Log的话需要慎用</strong></p>
+<h1 id="参考文献">参考文献</h1><ul>
+<li><a href="http://proguard.sourceforge.net/" target="_blank" rel="external">http://proguard.sourceforge.net/</a></li>
+<li><a href="http://www.jianshu.com/p/60e82aafcfd0" target="_blank" rel="external">http://www.jianshu.com/p/60e82aafcfd0</a></li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/29/rss-share/" rel="next" title="Android订阅推荐">
+                <i class="fa fa-chevron-left"></i> Android订阅推荐
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/05/17/android-use-log-gracefully-and-correctly/"
+     data-title="如何优雅正确地使用Log"
+     data-content=""
+     data-url="http://caizhitao.com/2016/05/17/android-use-log-gracefully-and-correctly/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/17/android-use-log-gracefully-and-correctly/"
+           data-title="如何优雅正确地使用Log" data-url="http://caizhitao.com/2016/05/17/android-use-log-gracefully-and-correctly/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/author.jpg"
+               alt="Zhitao Cai" />
+          <p class="site-author-name" itemprop="name">Zhitao Cai</p>
+          <p class="site-description motion-element" itemprop="description">专注成就专业，我只饮菠萝啤</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhitaocai" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/caizhitao" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Star</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">StormZhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/category/android/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/sinyu890807" target="_blank">GuoLin</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuchong.me" target="_blank">Jark</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.iissnan.com/" target="_blank">IissNan</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原生的Android_Log使用"><span class="nav-number">1.</span> <span class="nav-text">原生的Android Log使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原生Android_Log的语句不够优雅"><span class="nav-number">1.1.</span> <span class="nav-text">原生Android Log的语句不够优雅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原生的Android_Log并不能很好地输出详细的信息"><span class="nav-number">1.2.</span> <span class="nav-text">原生的Android Log并不能很好地输出详细的信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#封装自己的Log"><span class="nav-number">2.</span> <span class="nav-text">封装自己的Log</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优雅地控制Log输出"><span class="nav-number">3.</span> <span class="nav-text">优雅地控制Log输出</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用BuildConfig来控制Log输出"><span class="nav-number">3.1.</span> <span class="nav-text">使用BuildConfig来控制Log输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Proguard来控制Log输出"><span class="nav-number">3.2.</span> <span class="nav-text">使用Proguard来控制Log输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较"><span class="nav-number">3.3.</span> <span class="nav-text">比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试代码"><span class="nav-number">3.3.1.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反编译结果"><span class="nav-number">3.3.2.</span> <span class="nav-text">反编译结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">3.3.3.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhitao Cai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      //if (CONFIG.sidebar === 'post') {
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"caizhitao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

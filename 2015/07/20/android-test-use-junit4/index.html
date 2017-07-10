@@ -1,0 +1,914 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Junit4," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhitao Cai's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在阅读本文之前，强烈建议仔细阅读上文了解Junit3的一些相关内容，那么你更需要了解Junit4。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Android单元测试系列】二、Junit4使用">
+<meta property="og:url" content="http://caizhitao.com/2015/07/20/android-test-use-junit4/index.html">
+<meta property="og:site_name" content="Zhitao Cai's Blog">
+<meta property="og:description" content="在阅读本文之前，强烈建议仔细阅读上文了解Junit3的一些相关内容，那么你更需要了解Junit4。">
+<meta property="og:image" content="http://caizhitao.com/img/【Android单元测试系列】二、Junit4使用/1.png">
+<meta property="og:image" content="http://caizhitao.com/img/【Android单元测试系列】二、Junit4使用/2.png">
+<meta property="og:image" content="http://caizhitao.com/img/【Android单元测试系列】二、Junit4使用/3.png">
+<meta property="og:image" content="http://caizhitao.com/img/【Android单元测试系列】二、Junit4使用/4.png">
+<meta property="og:image" content="http://caizhitao.com/img/【Android单元测试系列】二、Junit4使用/5.png">
+<meta property="og:updated_time" content="2016-07-16T00:33:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Android单元测试系列】二、Junit4使用">
+<meta name="twitter:description" content="在阅读本文之前，强烈建议仔细阅读上文了解Junit3的一些相关内容，那么你更需要了解Junit4。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 【Android单元测试系列】二、Junit4使用 | Zhitao Cai's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?86b8e909fc50a5340f9c4381ad36cf46";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Zhitao Cai's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">专注成就专业，我只饮菠萝啤</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                【Android单元测试系列】二、Junit4使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-20T21:25:01+08:00" content="2015-07-20">
+              2015-07-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-Test/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Test</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/20/android-test-use-junit4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/20/android-test-use-junit4/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在阅读本文之前，强烈建议仔细阅读上文了解Junit3的一些相关内容，那么你更需要了解Junit4。<br><a id="more"></a></p>
+<h1 id="Junit3_-&gt;_Junit4">Junit3 -&gt; Junit4</h1><p>在将Junit4之前，我们需要先回顾一下Junit3的一些特性及一些评价：</p>
+<ol>
+<li><strong>测试类需要继承TestCase</strong>，但是java只能单继承</li>
+<li><strong>测试类的测试方法需要以</strong><code>test</code><strong>方法开头，不够美观，不够优雅</strong></li>
+<li><strong>初始化和回收代码在每个测试方法之前调用，一些方法其实可以统一初始化的，而无需每次测试前都初始化一遍，也即不支持类初始化</strong></li>
+<li><strong>如果一个方法的测试，需要模拟很多参数的时候，可能需要写很多重复的代码，不够优雅</strong></li>
+<li><strong>要写的东西总感觉有点多</strong></li>
+<li>…</li>
+</ol>
+<p>于是，Junit4出来了，Junit4 主要使用自Java 1.5起支持的注解技术。But，Andorid SDK默认是使用Junit3的，因此，如果需要在<code>Android Studio</code>中使用Junit4，那么我们需要引入Junit4的类库才能使用，在<code>app/build.gradle</code>中添加下面依赖库：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">compile</span> <span class="keyword">fileTree</span>(dir: <span class="string">'libs'</span>, <span class="keyword">include</span>: [<span class="string">'*.jar'</span>])</span><br><span class="line">        <span class="keyword">compile</span> <span class="string">'com.android.support:appcompat-v7:22.1.1'</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 注意是testCompile与androidTestCompile是有区别的，后面会说到</span></span><br><span class="line">        testCompile <span class="string">'junit:junit:4.12'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="@Test">@Test</h1><p>Junit3中我们测试一个方法需要继承<code>TestCase</code>并且需要测试的方法都需要固定前缀命名为<code>test</code></p>
+<p>e.g</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Junit3 写法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit3TestCase</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test_add</span><span class="params">()</span></span>&#123;</span><br><span class="line">        assertEquals(<span class="number">2</span>, MathUtil.add(<span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是同样的测试用例，在Junit4中仅需要用<code>@Test</code>注解就可以完成了:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Junit4 写法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit4TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Assert.assertEquals(<span class="number">2</span>, MathUtil.add(<span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Junit3 -&gt; Junit4测试方法使用比较:</p>
+<ol>
+<li>不用继承<code>TestCase</code></li>
+<li>不用固定方法命名前缀一定加<code>test</code>，可以实现测试类和源码类，类名方法名完全保存一致，高雅直观</li>
+<li>仅需要在被测试的方法前面加上<code>@Test</code>注解就可以将该方法标注为测试方法</li>
+</ol>
+<h1 id="@Before_@After">@Before @After</h1><p>Junit3中，我们重写<code>TestCase</code>的<code>setUp</code>和<code>tearDown</code>方法就可以实现每个测试方法测试前后的初始化和回收，Junit4中，仅需要在需要的方法前面加上<code>@Before</code>、<code>@After</code>即可快速实现相同的功能:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Junit3 写法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit3TestCase</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.setUp();</span><br><span class="line">        System.out.println(<span class="string">"---Calling setUp---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">tearDown</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.tearDown();</span><br><span class="line">        System.out.println(<span class="string">"---Calling tearDown---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test_add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---Calling test_add---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test_sub</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---Calling test_sub---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Junit4 写法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit4TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---BeforeMethod---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@After</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---AfterMethod---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---add---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sub</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---sub---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/【Android单元测试系列】二、Junit4使用/1.png" alt=""></p>
+<h1 id="@BeforeClass_@AfterClass">@BeforeClass @AfterClass</h1><p>Junit4新增了<code>@BeforeClass</code>和<code>@AfterClass</code>两个注解</p>
+<ul>
+<li><code>@BeforeClass</code>：在该类的所有测试方法运行之前，执行一次</li>
+<li><code>@AfterClass</code>:在该类的所有测试方法运行完之后，执行一次</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit4TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@BeforeClass</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">beforeClass</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---BeforeClass---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@AfterClass</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">afterClass</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---AfterClass---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---BeforeMethod---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@After</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---AfterMethod---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---add---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sub</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---sub---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/【Android单元测试系列】二、Junit4使用/2.png" alt=""></p>
+<h1 id="@Ignore">@Ignore</h1><p>Junit4新增了<code>@Ignore</code>注解：被<code>@Ignore</code>注解修饰的测试方法，不会纳入测试结果中，即便错误，也不会影响到整体测试结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit4TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---add---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sub</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"---sub---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="annotation">@Ignore</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Assert.assertEquals(<span class="keyword">true</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/【Android单元测试系列】二、Junit4使用/3.png" alt=""></p>
+<h1 id="异常测试">异常测试</h1><p>Junit3 中测试可能会抛出预期异常的方法时，我们需要针对这部分预期的异常进行处理，标识该异常为<strong>“正确的”</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 待测试类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 从一个浮点型字符串中获取小数部分的整数</span><br><span class="line">     * &lt;p/&gt;</span><br><span class="line">     * 实际上如果是一个整数或者其他不是数字的字符串，我们除了抛出无法转型的异常之外，还可能会抛出数组越界的异常</span><br><span class="line">     * 假设是"123"，那么是没有numbers[1]的</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> str</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@return</span></span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@throws</span> NumberFormatException</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getDecimalFromString</span><span class="params">(String str)</span> <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        String[] numbers = str.split(<span class="string">"\\."</span>);</span><br><span class="line">        <span class="keyword">return</span> Integer.valueOf(numbers[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Junit3 中针对预期异常的写法</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit3TestCase</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test_getDecimalFromString</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            assertEquals(<span class="number">456</span>, MathUtil.getDecimalFromString(<span class="string">"123.456d"</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</span><br><span class="line">            assertNotNull(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Junit4中我们仅需要在<code>@Test</code>注解中写上<code>(expected = xxxException.class)</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MathUtilJunit4TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span>(expected = NumberFormatException.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getDecimalFromString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Assert.assertEquals(<span class="number">456</span>, MathUtil.getDecimalFromString(<span class="string">"123.456d"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="限时测试">限时测试</h1><p>Junit4新增限时测试，只需要在<code>@Test</code>注解中加上<code>(timeout = 1000)</code>即可标识这个方法必须在1000ms内跑完，否则测试失败</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 待测试类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncTask</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sync_getOnlineConfig</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 采用线程睡眠模拟耗时操作</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"key1"</span>.equals(key)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"value1"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncTaskJunit4TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span>(timeout = <span class="number">1000</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sync_getOnlineConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Assert.assertEquals(<span class="string">"value1"</span>, <span class="keyword">new</span> AsyncTask().sync_getOnlineConfig(<span class="string">"key1"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/【Android单元测试系列】二、Junit4使用/4.png" alt=""></p>
+<h1 id="@RunWith">@RunWith</h1><p>在上文Junit3使用中，我们说到，Junit的运作模式： <strong>TestCase</strong> -&gt; <strong>TestSuite</strong> -&gt; <strong>TestRunner</strong> ==&gt; <strong>TestResult</strong>，但是上文并没有怎么讲到<code>TestRunner</code>，这是因为在Junit4中讲解比较容易理解。</p>
+<h2 id="参数化测试_@Parameterized">参数化测试 @Parameterized</h2><p>回顾Junit3中的参数化测试，不断copy同一个方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 待测试类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringUtil</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isStringNull</span><span class="params">(String... args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (args == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (String arg : args) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arg == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (arg.trim().length() == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringUtilJunit3TestCase</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 测试字符串是否为空的方法,因为要模拟各种边界情况，这里就详细列出各个情况</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@throws</span> Exception</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test_isStringNull</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        assertEquals(<span class="keyword">true</span>, StringUtil.isStringNull(<span class="keyword">null</span>));</span><br><span class="line">        assertEquals(<span class="keyword">true</span>, StringUtil.isStringNull(<span class="keyword">null</span>, <span class="keyword">null</span>));</span><br><span class="line">        assertEquals(<span class="keyword">true</span>, StringUtil.isStringNull(<span class="string">""</span>));</span><br><span class="line">        assertEquals(<span class="keyword">true</span>, StringUtil.isStringNull(<span class="string">""</span>, <span class="string">""</span>));</span><br><span class="line">        assertEquals(<span class="keyword">false</span>, StringUtil.isStringNull(<span class="string">"123"</span>));</span><br><span class="line">        assertEquals(<span class="keyword">true</span>, StringUtil.isStringNull(<span class="string">"123"</span>, <span class="string">""</span>));</span><br><span class="line">        assertEquals(<span class="keyword">false</span>, StringUtil.isStringNull(<span class="string">"123"</span>, <span class="string">"345"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Junit4中，我们可以通过</p>
+<ul>
+<li><code>@RunWith</code>:指定我们的测试环境为参数化测试(<code>Parameterized.class</code>)</li>
+</ul>
+<p>同时，将所有的参数列为一个数组，并修饰为<code>@Parameterized.Parameters()</code>，然后，通过<strong>自定义构造函数</strong>，为每组测试参数赋值，然后调用测试方法进行测试:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@RunWith</span>(Parameterized.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringUtilJunit4TestCase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Parameterized</span>.Parameters()</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object[]&gt; data() &#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][] &#123;</span><br><span class="line">                &#123;<span class="keyword">true</span>, <span class="keyword">null</span>&#125;, &#123;<span class="keyword">true</span>, <span class="keyword">new</span> String[] &#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;&#125;, &#123;<span class="keyword">true</span>, <span class="keyword">new</span> String[] &#123;<span class="string">""</span>&#125;&#125;, &#123;<span class="keyword">true</span>, <span class="keyword">new</span> String[] &#123;<span class="string">""</span>, <span class="string">""</span>&#125;&#125;,</span><br><span class="line">                &#123;<span class="keyword">false</span>, <span class="keyword">new</span> String[] &#123;<span class="string">"123"</span>&#125;&#125;, &#123;<span class="keyword">true</span>, <span class="keyword">new</span> String[] &#123;<span class="string">"123"</span>, <span class="string">""</span>&#125;&#125;, &#123;<span class="keyword">false</span>, <span class="keyword">new</span> String[] &#123;<span class="string">"123"</span>, <span class="string">"456"</span>&#125;&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mExpected;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String[] mArgs;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">StringUtilJunit4TestCase</span><span class="params">(<span class="keyword">boolean</span> expected, String... args)</span> </span>&#123;</span><br><span class="line">        mExpected = expected;</span><br><span class="line">        mArgs = args;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">isStringNull</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Assert.assertEquals(mExpected, StringUtil.isStringNull(mArgs));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="打包/套件测试_@Site-SuiteClasses">打包/套件测试 @Site.SuiteClasses</h2><p>在Junit3中，我们定义一个TestSuite，在运行时，默认是运行在TestSuite中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Junit3TestSuite</span> <span class="keyword">extends</span> <span class="title">TestSuite</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Test <span class="title">suite</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        TestSuite suite = <span class="keyword">new</span> TestSuite(Junit3TestSuite.class);</span><br><span class="line"></span><br><span class="line">        suite.addTestSuite(MathUtilJunit3TestCase.class);</span><br><span class="line">        suite.addTestSuite(StringUtilJunit3TestCase.class);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> suite;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Junit4中，我们可以通过</p>
+<ul>
+<li><code>@RunWith</code>：指定测试环境为<code>Suite.class</code></li>
+<li><code>@Site.SuiteClasses({xxx.class, xxx.class})</code>:指定待测试的类</li>
+</ul>
+<p>来实现同样的操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@RunWith</span>(Suite.class)</span><br><span class="line"><span class="annotation">@Suite</span>.SuiteClasses(&#123;MathUtilJunit4TestCase.class, StringUtilJunit4TestCase.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Junit4TestSuite</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="指定测试方法执行顺序_@FixMethodOrder">指定测试方法执行顺序 @FixMethodOrder</h1><p>从<strong>Junit4.11</strong>版本开始，Junit支持指定测试执行顺序，只需要在测试类添加下面3个注解之一即可:</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@FixMethodOrder(MethodSorters.DEFAULT)</code></td>
+<td><strong>默认值</strong>，使用一个确定的但是不可预测的排序</td>
+</tr>
+<tr>
+<td><code>@FixMethodOrder(MethodSorters.NAME_ASCENDING)</code></td>
+<td>根据测试方法的方法名排序,按照词典排序规则(ASC,从小到大,递增)。</td>
+</tr>
+<tr>
+<td><code>@FixMethodOrder(MethodSorters.JVM)</code></td>
+<td>保留测试方法的执行顺序为JVM返回的顺序。每次测试的执行顺序有可能会所不同。</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">   </span><br><span class="line"><span class="comment">//默认值：使用一个确定的但是不可预测的排序</span></span><br><span class="line"><span class="annotation">@FixMethodOrder</span>(MethodSorters.DEFAULT)</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据测试方法的方法名排序,按照词典排序规则(ASC,从小到大,递增)。</span></span><br><span class="line"><span class="comment">//@FixMethodOrder(MethodSorters.NAME_ASCENDING)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//保留测试方法的执行顺序为JVM返回的顺序。每次测试的执行顺序有可能会所不同。</span></span><br><span class="line"><span class="comment">//@FixMethodOrder(MethodSorters.JVM)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"======a======"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">d</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"======d======"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">c</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"======c======"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"======b======"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/【Android单元测试系列】二、Junit4使用/5.png" alt=""></p>
+<p>实际测试，<code>MethodSorters.DEFAULT</code>和<code>MethodSorters.NAME_ASCENDING</code>基本一样的执行顺序，这里还没搞懂不同的地方，而且仅有的这3个参数其实并不能满足我们的实际需求，如果确实需要制定测试执行顺序，感觉下面两个方案可行：</p>
+<ol>
+<li>采用Junit4的这种指定测试执行顺序的参数，但是需要将你的测试方法名都要修改为能够按照字母由小到大排序的命名；</li>
+<li>将需要按照顺序指定的测试方法集中到一个方法中执行，以模拟<strong>按指定顺序</strong>执行。</li>
+</ol>
+<h1 id="命令行运行测试">命令行运行测试</h1><p>通过运行 <code>./gradlew test</code> 即可运行项目的单元测试用例</p>
+<h1 id="测试报告">测试报告</h1><p>Junit的单元测试报告位置默认在 <code>build/reports/tests/</code> 目录下，里面有 <code>index.html</code> 文件，打开就可以看到测试报告（通过率，失败原因等等等）</p>
+<p>也可以在 <code>build.gradle</code> 文件中重新制定测试报告的位置</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	testOptions &#123;</span><br><span class="line">		<span class="comment">// 默认测试报告路径build/reports/androidTests/</span></span><br><span class="line">		<span class="comment">// 可以通过下面代码自定义测试路径</span></span><br><span class="line">		resultsDir = <span class="string">"$&#123;project.buildDir&#125;/testReport"</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料">参考资料</h1><p>在写本文的时候，我参考了很多相关的资料，但是在编写过程中，忘记了一些参考链接，或者该参考资料仅在某一点上有参考价值，因此总结下来，下面参考资料在我编写本文的时候提供了极大的帮助：</p>
+<ul>
+<li><strong>【强推】</strong><a href="http://www.cnblogs.com/fsjohnhuang/p/4061902.html" target="_blank" rel="external">Junit4使用详解</a></li>
+<li><a href="http://www.blogjava.net/jnbzwm/archive/2010/12/15/340801.html" target="_blank" rel="external">Junit3、4相关使用</a></li>
+<li><a href="http://blog.csdn.net/wangpeng047/article/details/9628449" target="_blank" rel="external">Junit4基本注解使用</a></li>
+<li><a href="http://blog.csdn.net/wangpeng047/article/details/9630203" target="_blank" rel="external">Junit4参数化测试、打包测试、异常测试、限时测试</a></li>
+<li><a href="http://www.cnblogs.com/nexiyi/p/junit_test_in_order.html" target="_blank" rel="external">JUnit中按照顺序执行测试方式</a></li>
+<li><a href="http://blog.csdn.net/renfufei/article/details/36421087" target="_blank" rel="external">Junit指定测试执行顺序</a></li>
+</ul>
+<h1 id="项目源码地址">项目源码地址</h1><p>本系列的源码我都会统一放在这个项目上<a href="https://github.com/zhitaocai/UnitTest/tree/master" target="_blank" rel="external">UnitTest</a>。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Junit4/" rel="tag">#Junit4</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/14/android-test-use-junit3/" rel="next" title="【Android单元测试系列】一、Junit3使用">
+                <i class="fa fa-chevron-left"></i> 【Android单元测试系列】一、Junit3使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/22/vim-instant-markdown/" rel="prev" title="vim即时预览markdown">
+                vim即时预览markdown <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/07/20/android-test-use-junit4/"
+     data-title="【Android单元测试系列】二、Junit4使用"
+     data-content=""
+     data-url="http://caizhitao.com/2015/07/20/android-test-use-junit4/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/07/20/android-test-use-junit4/"
+           data-title="【Android单元测试系列】二、Junit4使用" data-url="http://caizhitao.com/2015/07/20/android-test-use-junit4/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/author.jpg"
+               alt="Zhitao Cai" />
+          <p class="site-author-name" itemprop="name">Zhitao Cai</p>
+          <p class="site-description motion-element" itemprop="description">专注成就专业，我只饮菠萝啤</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhitaocai" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/caizhitao" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Star</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">StormZhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/category/android/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/sinyu890807" target="_blank">GuoLin</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuchong.me" target="_blank">Jark</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.iissnan.com/" target="_blank">IissNan</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Junit3_->_Junit4"><span class="nav-number">1.</span> <span class="nav-text">Junit3 -> Junit4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#@Test"><span class="nav-number">2.</span> <span class="nav-text">@Test</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#@Before_@After"><span class="nav-number">3.</span> <span class="nav-text">@Before @After</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#@BeforeClass_@AfterClass"><span class="nav-number">4.</span> <span class="nav-text">@BeforeClass @AfterClass</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#@Ignore"><span class="nav-number">5.</span> <span class="nav-text">@Ignore</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常测试"><span class="nav-number">6.</span> <span class="nav-text">异常测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#限时测试"><span class="nav-number">7.</span> <span class="nav-text">限时测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#@RunWith"><span class="nav-number">8.</span> <span class="nav-text">@RunWith</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参数化测试_@Parameterized"><span class="nav-number">8.1.</span> <span class="nav-text">参数化测试 @Parameterized</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打包/套件测试_@Site-SuiteClasses"><span class="nav-number">8.2.</span> <span class="nav-text">打包/套件测试 @Site.SuiteClasses</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指定测试方法执行顺序_@FixMethodOrder"><span class="nav-number">9.</span> <span class="nav-text">指定测试方法执行顺序 @FixMethodOrder</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行运行测试"><span class="nav-number">10.</span> <span class="nav-text">命令行运行测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试报告"><span class="nav-number">11.</span> <span class="nav-text">测试报告</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">12.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目源码地址"><span class="nav-number">13.</span> <span class="nav-text">项目源码地址</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhitao Cai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      //if (CONFIG.sidebar === 'post') {
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"caizhitao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

@@ -1,0 +1,940 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android 系统兼容," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhitao Cai's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+
+
+
+<meta name="description" content="获取顶端包名功能在Android 5.0系统前后发生重大变化，经过各种搬运加测试后，得出一些通用解决方案，虽然没有一种简单通用的方法，但是目前已经有可以兼容所有系统的方案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="获取当前顶端包名【兼容所有系统】">
+<meta property="og:url" content="http://caizhitao.com/2015/09/29/get-top-package-name/index.html">
+<meta property="og:site_name" content="Zhitao Cai's Blog">
+<meta property="og:description" content="获取顶端包名功能在Android 5.0系统前后发生重大变化，经过各种搬运加测试后，得出一些通用解决方案，虽然没有一种简单通用的方法，但是目前已经有可以兼容所有系统的方案。">
+<meta property="og:image" content="http://caizhitao.com/img/获取当前顶端包名/1.png">
+<meta property="og:image" content="http://caizhitao.com/img/获取当前顶端包名/2.png">
+<meta property="og:image" content="http://caizhitao.com/img/获取当前顶端包名/3.png">
+<meta property="og:image" content="http://caizhitao.com/img/获取当前顶端包名/4.png">
+<meta property="og:image" content="http://caizhitao.com/img/获取当前顶端包名/5.png">
+<meta property="og:image" content="http://caizhitao.com/img/获取当前顶端包名/6.png">
+<meta property="og:updated_time" content="2016-07-16T00:33:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="获取当前顶端包名【兼容所有系统】">
+<meta name="twitter:description" content="获取顶端包名功能在Android 5.0系统前后发生重大变化，经过各种搬运加测试后，得出一些通用解决方案，虽然没有一种简单通用的方法，但是目前已经有可以兼容所有系统的方案。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 获取当前顶端包名【兼容所有系统】 | Zhitao Cai's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?86b8e909fc50a5340f9c4381ad36cf46";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Zhitao Cai's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">专注成就专业，我只饮菠萝啤</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                获取当前顶端包名【兼容所有系统】
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-09-29T16:19:28+08:00" content="2015-09-29">
+              2015-09-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-Develop/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Develop</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/09/29/get-top-package-name/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/29/get-top-package-name/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>获取顶端包名功能在Android 5.0系统前后发生重大变化，经过各种搬运加测试后，得出一些通用解决方案，虽然没有一种简单通用的方法，但是目前已经有可以兼容所有系统的方案。<br><a id="more"></a></p>
+<h1 id="Android_5-0_之前">Android 5.0 之前</h1><h2 id="直接通过getRunningTasks方法进行获取">直接通过getRunningTasks方法进行获取</h2><h3 id="用法">用法</h3><p>需要添加下面权限:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">uses-permission</span> <span class="attribute">android:name</span>=<span class="value">"android.permission.GET_TASKS"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);</span><br><span class="line">ComponentName cn = activityManager.getRunningTasks(<span class="number">1</span>).get(<span class="number">0</span>).topActivity;</span><br><span class="line">String currentPkgName = cn.getPackageName(); <span class="comment">// 当前显示在顶端的包名</span></span><br></pre></td></tr></table></figure>
+<h3 id="结论">结论</h3><ol>
+<li>通过上面的方法，我们就可以获取到当前显示在顶端的包名，很多锁屏类，或者应用锁的核心就是这块</li>
+<li>可惜的是5.0(API &gt; 20) 之后就不能再用这个方法了，<strong>根据下面的官方说明，Android 5.0系统之后</strong> <code>getRunningTasks</code> <strong>方法被弃用了，经过实际测试之后，这个方法仅仅只能返回自身应用信息以及一些公开包名的信息(如：桌面，设置等)</strong><br> <img src="/img/获取当前顶端包名/1.png" alt=""></li>
+</ol>
+<h1 id="Android_5-0_之后">Android 5.0 之后</h1><h2 id="通过getRunningAppProcesses方法进行获取">通过getRunningAppProcesses方法进行获取</h2><p>原理：通过获取当前在顶端运行的进程，遍历该进程下的所有包名，得出该进程下的包名列表</p>
+<h3 id="使用方法">使用方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 检查当前在最前端运行的进程包名列表</span><br><span class="line"> * <span class="doctag">@param</span> context</span><br><span class="line"> * <span class="doctag">@return</span> </span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> String[] getForegroundPkgName(Context context) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ActivityManager activityManager = (ActivityManager) context.getApplicationContext().getSystemService(</span><br><span class="line">                Context.ACTIVITY_SERVICE);</span><br><span class="line">        List&lt;ActivityManager.RunningAppProcessInfo&gt; processInfos = activityManager.getRunningAppProcesses();</span><br><span class="line">        <span class="keyword">for</span> (ActivityManager.RunningAppProcessInfo processInfo : processInfos) &#123;</span><br><span class="line">            <span class="keyword">if</span> (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) &#123;</span><br><span class="line">                Log.i(<span class="string">"test"</span>, <span class="string">"当前顶端进程的信息"</span>);</span><br><span class="line">                Log.i(<span class="string">"test"</span>, <span class="string">"进程id: "</span> + processInfo.pid);</span><br><span class="line">                Log.i(<span class="string">"test"</span>, <span class="string">"进程名  : "</span> + processInfo.processName);</span><br><span class="line">                Log.i(<span class="string">"test"</span>, <span class="string">"该进程下可能存在的包名"</span>);</span><br><span class="line">                <span class="keyword">for</span> (String pkgName : processInfo.pkgList) &#123;</span><br><span class="line">                    Log.i(<span class="string">"test"</span>, <span class="string">"  "</span> + pkgName);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> processInfo.pkgList;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="结论-1">结论</h3><ol>
+<li>正如原理所描述，它返回的是当前在顶端运行的进程的包名列表，正常情况下，我们开发的时候都是一个进程对应一个包名，但是如果是大公司的话，可能会将旗下所有应用共享同一个进程，于是这里就会返回一个包名数组，所以这个方法只能说满足大部分日常需求</li>
+<li>经过最近的测试，还发现了在一些新的机器上（国产为主，代表:小米 v5.0.2系统）已经不能再使用这种方案了，因为这个方法在这些机器上，只能获取到自己应用的信息，变得和 <code>getRunningTasks</code> 在Android 5.0系统上的表现差不多</li>
+<li>需要继续寻找新方案…</li>
+</ol>
+<h2 id="通过Android_5-0提供的新API进行获取">通过Android 5.0提供的新API进行获取</h2><p>Android 5.0之后提供了一个新的API: <code>UsageStatsManager</code>，通过该API我们可以准确获取到当前顶端的包名信息</p>
+<h3 id="使用方法-1">使用方法</h3><p>需要添加下面的权限:</p>
+<ol>
+<li>添加下面权限:</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">uses-permission</span></span><br><span class="line">    <span class="attribute">android:name</span>=<span class="value">"android.permission.PACKAGE_USAGE_STATS"</span></span><br><span class="line">    <span class="attribute">tools:ignore</span>=<span class="value">"ProtectedPermissions"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>引导用户到设置页面为自身应用开启 <strong>有权查看使用情况的应用</strong> 的权限:</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);</span><br><span class="line">startActivity(intent);</span><br><span class="line"></span><br><span class="line"><span class="comment">//一些机子上是没法直接到达上面的设置页面的，所以还需要 ``try catch`` 上面的代码，catch到错误之后尝试后备方案——进入到该设置页面的上一级页面</span></span><br><span class="line"></span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(Settings.ACTION_SECURITY_SETTINGS);</span><br><span class="line">intent.setComponent(</span><br><span class="line">        <span class="keyword">new</span> ComponentName(<span class="string">"com.android.settings"</span>, <span class="string">"com.android.settings.Settings$SecuritySettingsActivity"</span>));</span><br><span class="line">intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>通过下面的代码即可获取顶端包名:</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 获取当前在顶端运行的应用包名(适用于Andriod 5.0以上的机器)</span><br><span class="line"> * &lt;p&gt;</span><br><span class="line"> * 通过AndroidL的新API——UsageStatsManager来进行获取，但是需要配置权限和需要用户允许获取</span><br><span class="line"> * 所以需要本方法能准确获取，但是体验不太好，建议先用getRunningAppProcesses方法进行获取，不行采用这个方法</span><br><span class="line"> * &lt;/p&gt;</span><br><span class="line"> * &lt;p/&gt;</span><br><span class="line"> * 使用本方法之前需要配置下面内容</span><br><span class="line"> * &lt;pre&gt;</span><br><span class="line"> * 1. 权限配置</span><br><span class="line"> *   a. 需要在AndroidManifest.xml中配置权限</span><br><span class="line"> *</span><br><span class="line"> *         &lt;uses-permission</span><br><span class="line"> *             android:name="android.permission.PACKAGE_USAGE_STATS"</span><br><span class="line"> *             tools:ignore="ProtectedPermissions" /&gt;</span><br><span class="line"> *</span><br><span class="line"> *</span><br><span class="line"> *   b. 然后还要在AndroidManifest.xml中的manifest标签中配置</span><br><span class="line"> *         xmlns:tools="http://schemas.android.com/tools"</span><br><span class="line"> *</span><br><span class="line"> * 2. 需要用户允许这个应用能获取用户数据统计信息的权限</span><br><span class="line"> *        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);</span><br><span class="line"> *        startActivity(intent);</span><br><span class="line"> * &lt;/pre&gt;</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> time_ms 从$&#123;time_ms&#125;内找出最近显示在顶端的包名</span><br><span class="line"> * <span class="doctag">@return</span></span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getTopRunningPkgNameAboveAndroidL2</span><span class="params">(Context context, <span class="keyword">long</span> time_ms)</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">   <span class="comment">// 通过Android 5.0 之后提供的新api来获取最近一段时间内的应用的相关信息</span></span><br><span class="line">   String topPackageName = <span class="keyword">null</span>;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">21</span>) &#123;</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line"> </span><br><span class="line">         <span class="comment">// 根据最近time_ms毫秒内的应用统计信息进行排序获取当前顶端的包名</span></span><br><span class="line">         <span class="keyword">long</span> time = System.currentTimeMillis();</span><br><span class="line">         UsageStatsManager usage = (UsageStatsManager) context.getSystemService(<span class="string">"usagestats"</span>);</span><br><span class="line">         List&lt;UsageStats&gt; usageStatsList = usage.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time - time_ms, time);</span><br><span class="line">         <span class="keyword">if</span> (usageStatsList != <span class="keyword">null</span> &amp;&amp; usageStatsList.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            SortedMap&lt;Long, UsageStats&gt; runningTask = <span class="keyword">new</span> TreeMap&lt;Long, UsageStats&gt;();</span><br><span class="line">            <span class="keyword">for</span> (UsageStats usageStats : usageStatsList) &#123;</span><br><span class="line">               runningTask.put(usageStats.getLastTimeUsed(), usageStats);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (runningTask.isEmpty()) &#123;</span><br><span class="line">               <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            topPackageName = runningTask.get(runningTask.lastKey()).getPackageName();</span><br><span class="line">            Log.i(<span class="string">"test"</span>, <span class="string">"##当前顶端应用包名:"</span> + topPackageName);</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line"> </span><br><span class="line">      &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">return</span> topPackageName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>如果希望能检测用户是否已经允许本应用有权查看组件使用情况，可以通过下面代码进行检查:</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">19</span>) &#123;</span><br><span class="line">    PackageManager packageManager = context.getPackageManager();</span><br><span class="line">    ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), <span class="number">0</span>);</span><br><span class="line">    AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);</span><br><span class="line">    <span class="keyword">int</span> mode = appOpsManager</span><br><span class="line">            .checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);</span><br><span class="line">    <span class="keyword">return</span> mode == AppOpsManager.MODE_ALLOWED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="结论-2">结论</h3><ol>
+<li>使用这个方法之前<strong>需要用户允许应用有权查看组件使用情况</strong>，然后才有数据返回</li>
+<li>新的API能完美进行，就是需要添加新的权限和做一下用户引导</li>
+<li>如果获取的时间设置得太短，并且这个时间内又没有发生改变的话，那么是获取不到最新的顶端的包名情况的</li>
+<li><strong>最重要的是</strong>，最近又发现在一些机器上（国产为主，魅族领头，LG G3在列），是没有<strong>允许应用有权查看使用组件的情况</strong>的设置页面的，于是，我们大喊一声，妈蛋~</li>
+<li>需要继续寻找新方案…</li>
+</ol>
+<h1 id="总结(截止至2015-09-22)">总结(截止至2015-09-22)</h1><p>目前还不能全面兼容Android 5.0系统，还需要继续寻找新的方案</p>
+<h1 id="后续尝试">后续尝试</h1><h2 id="尝试dunpsys命令">尝试dunpsys命令</h2><p>如果是在adb shell中使用 <code>dumpsys activity activities</code> 的话，倒是可以获取到顶端的包名，但是代码中的话，除非你拥有和系统应用的签名，否则，是不能使用 <code>android.permission.DUMP</code> 权限的，也就不能使用 <code>dumpsys</code> 命令了</p>
+<p><strong>continue…</strong></p>
+<p><a name="proc" id="chap-proc"></a></p>
+<h2 id="尝试通过/proc目录进行判断">尝试通过/proc目录进行判断</h2><p><code>/proc</code> 目录是存放当前系统运行中的一些信息，包括各个进程，cpu，内存，启动时长等，具体目录介绍可以参照<a href="http://blog.chinaunix.net/uid-23960192-id-3549140.html" target="_blank" rel="external">这里</a>，偶然间发现了<a href="http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag" target="_blank" rel="external">stackoverflow</a> 上的这个神贴，就是用这个方法的，无须任何权限，但是作者也说到缺乏测试，而我这边自己测试之后发现不是很理想，很多机子都不行</p>
+<p><strong>ps:</strong></p>
+<ol>
+<li><p>正常的 <code>cgroup</code> 文件（Nexus4）上结果如下:</p>
+<p> <img src="/img/获取当前顶端包名/2.png" alt=""> </p>
+</li>
+<li><p>附上几张在天朝不同机子上的 <code>cgroup</code> 文件解读图：</p>
+</li>
+</ol>
+<ul>
+<li>魅族mx4 Flyme OS 4.2.8.2C Android 4.4.2 <img src="/img/获取当前顶端包名/3.png" alt=""></li>
+<li>魅族mx4 pro Flyme OS 4.5.5A Android 5.0.1 <img src="/img/获取当前顶端包名/4.png" alt=""></li>
+<li>魅族m2 note Flyme OS 4.5.3A Android 5.1 <img src="/img/获取当前顶端包名/5.png" alt=""></li>
+<li>小米2s MIUI 5.7.16 Android 5.0.2 <img src="/img/获取当前顶端包名/6.png" alt=""></li>
+</ul>
+<p><strong>continue…</strong></p>
+<h2 id="通过accessibility-service服务进行">通过accessibility-service服务进行</h2><p>方法参考<a href="http://stackoverflow.com/questions/3873659/android-how-can-i-get-the-current-foreground-activity-from-a-service/27642535#27642535" target="_blank" rel="external">这里</a>，经过测试，能够不用在配置新权限的前提下完美运行，但是也有一些问题</p>
+<blockquote>
+<ol>
+<li>Each user must enable the service via Android’s accessibility settings in order for the AccessibilityEvents to be received.<br>The service generally runs until the user explicitly disables it. You can make the service stop itself if needed, but I don’t know of any way to programmatically restart it correctly if you’ve stopped it.</li>
+<li>When a user tries to enables the AccessibilityService, they can’t press the OK button if an app has placed an overlay on the screen. Some apps that do this are Velis Auto Brightness and Lux. This can be confusing because the user might not know why they can’t press the button or how to work around it.</li>
+<li>The AccessibilityService won’t know the current activity until the first change of activity.</li>
+</ol>
+</blockquote>
+<p><strong>continue…</strong></p>
+<h2 id="结语">结语</h2><p>总结下来，Android 5.0以上的机子目前有4种方法可以尝试，每种方法都有一些优点和缺陷，在找到一个完美的方法之前，我们可以依次采用下面的方法来尽量覆盖多一点机型</p>
+<ol>
+<li><code>getRunningAppProcess</code></li>
+<li><code>通过观察proc</code></li>
+<li><code>UsageStatsManager</code></li>
+<li><code>Accessibility-service</code></li>
+</ol>
+<h1 id="后记&amp;&amp;最终解决方案">后记&amp;&amp;最终解决方案</h1><p>在我准备放弃的时候，我又重新看了一下 <a href="#chap-proc">通过观察proc</a> 获取当前运行中的进程这个方法，发现其核心代码在于通过判断<code>oom-score</code>来识别当前运行的顶端应用的，这个是什么原理呢？查阅了一下资料，这个涉及到 <code>Linux OOM Killer</code>机制:</p>
+<blockquote>
+<p>Linux 内核存在一个OOM killer（Out-Of-Memory killer），该机制会监控那些占用内存过大，尤其是瞬间很快消耗大量内存的进程，为了防止内存耗尽而内核会把该进程杀掉，而每个进程都有一个oom_score属性，oomkiller会杀掉oom_score较大的进程</p>
+</blockquote>
+<p>那么究竟杀掉那个进程呢，其实是受下面3个文件的影响：</p>
+<ul>
+<li><code>/proc/$PID/oom_adj</code>：用于调整oom_score的分数，范围在[-17,15]，当为-17时，oom_score将变为0，标识禁止杀死该进程</li>
+<li><code>/proc/$PID/oom_score</code>：标识最终的分数，分数越大，进程越有可能被杀</li>
+<li><code>/proc/$PID/oom_score_adj</code>：从Linux 2.6.36开始都安装了/proc/$PID/oom_score_adj，此后替换为/proc/$PID/oom_adj，即使当前是对/proc/$PID/oom_adj进行的设置，在内核内部进行变换后的值也是针对/proc/$PID/oom_score_adj设置的</li>
+</ul>
+<p>3个文件的具体manpage可以参考<a href="http://man7.org/linux/man-pages/man5/proc.5.html" target="_blank" rel="external">这里</a>，下面是我截取的一些关键内容 </p>
+<blockquote>
+<p><strong>/proc/[pid]/oom_adj (since Linux 2.6.11)</strong></p>
+<p>This file can be used to adjust the score used to select which process should be killed in an out-of-memory (OOM) situation.  The kernel uses this value for a bit-shift operation of the process’s oom_score value: valid values are in the range -16 to +15, plus the special value -17, which disables OOM-killing altogether for this process.  A positive score increases the likelihood of this process being killed by the OOM-killer; a negative score decreases the likelihood.</p>
+<p>The default value for this file is 0; a new process inherits its parent’s oom_adj setting.  A process must be privileged (CAP_SYS_RESOURCE) to update this file.  Since Linux 2.6.36, use of this file is deprecated in favor of /proc/[pid]/oom_score_adj.</p>
+<p><strong>/proc/[pid]/oom_score (since Linux 2.6.11)</strong></p>
+<p>This file displays the current score that the kernel gives to this process for the purpose of selecting a process for the OOM-killer.  A higher score means that the process is more likely to be selected by the OOM-killer.  The basis for this score is the amount of memory used by the process, with increases (+) or decreases (-) for factors including:</p>
+<ul>
+<li>whether the process creates a lot of children using fork(2) (+);</li>
+<li>whether the process has been running a long time, or has used a lot of CPU time (-);</li>
+<li>whether the process has a low nice value (i.e., &gt; 0) (+);</li>
+<li>whether the process is privileged (-); and</li>
+<li>whether the process is making direct hardware access (-).</li>
+</ul>
+<p>The oom_score also reflects the adjustment specified by the oom_score_adj or oom_adj setting for the process.</p>
+<p><strong>/proc/[pid]/oom_score_adj (since Linux 2.6.36)</strong><br>This file can be used to adjust the badness heuristic used to select which process gets killed in out-of-memory conditions.  The badness heuristic assigns a value to each candidate task ranging from 0 (never kill) to 1000 (always kill) to determine which process is targeted.  The units are roughly a proportion along that range of allowed memory the process may allocate from, based on an estimation of its current memory and swap use.  For example, if a task is using all allowed memory, its badness score will be 1000.  If it is using half of its allowed memory, its score will be 500.</p>
+<p>There is an additional factor included in the badness score: root processes are given 3% extra memory over other tasks.</p>
+<p>The amount of “allowed” memory depends on the context in which the OOM-killer was called.  If it is due to the memory assigned to the allocating task’s cpuset being exhausted, the allowed memory represents the set of mems assigned to that cpuset (see cpuset(7)).  If it is due to a mempolicy’s node(s) being exhausted, the allowed memory represents the set of mempolicy nodes.  If it is due to a memory limit (or swap limit) being reached, the allowed memory is that configured limit.  Finally, if it is due to the entire system being out of memory, the allowed memory represents all allocatable resources.</p>
+<p>The value of oom_score_adj is added to the badness score before it is used to determine which task to kill.  Acceptable values range from -1000 (OOM_SCORE_ADJ_MIN) to +1000 (OOM_SCORE_ADJ_MAX).  This allows user space to control the preference for OOM-killing, ranging from always preferring a certain task or completely disabling it from OOM killing.  The lowest possible value, -1000, is equivalent to disabling OOM- killing entirely for that task, since it will always report a badness score of 0.</p>
+<p>Consequently, it is very simple for user space to define the amount of memory to consider for each task.  Setting a oom_score_adj value of +500, for example, is roughly equivalent to allowing the remainder of tasks sharing the same system, cpuset, mempolicy, or memory controller resources to use at least 50% more memory.  A value of -500, on the other hand, would be roughly equivalent to discounting 50% of the task’s allowed memory from being considered as scoring against the task.</p>
+<p>For backward compatibility with previous kernels, /proc/[pid]/oom_adj can still be used to tune the badness score.  Its value is scaled linearly with oom_score_adj.</p>
+<p>Writing to /proc/[pid]/oom_score_adj or /proc/[pid]/oom_adj will change the other with its scaled value.</p>
+</blockquote>
+<p>通过上面的介绍，估计大家都有些想法了，恩，这是一条可行的路：</p>
+<ol>
+<li><strong>遍历</strong><code>/proc</code><strong>目录下的子目录，排除系统应用uid</strong></li>
+<li><strong>在根据一些其他规则排除一些不符合的应用</strong></li>
+<li><strong>排序剩下的应用，得出oom_score分数最少的pid</strong></li>
+<li><strong>根据pid找对应的包名</strong></li>
+</ol>
+<p>原理大概如此，基本代码可以参考<a href="http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag" target="_blank" rel="external">这里</a>，但是照抄那份代码是不太能在天朝厂商机子上跑通的，需要改进。Anyway，最后我改进代码之后，在我这边手上几台机子测试都没有什么问题，目前也在大规模测试中。</p>
+<p><em>ps. 因为一些原因，最终代码还不太好在现在发放出来</em></p>
+<h1 id="参考资料">参考资料</h1><ul>
+<li><a href="http://developer.android.com/reference/android/app/ActivityManager.html#getRunningTasks(int" target="_blank" rel="external">http://developer.android.com/reference/android/app/ActivityManager.html#getRunningTasks(int</a>)</li>
+<li><a href="http://chaoqunz.blog.163.com/blog/static/6154877720090495819383/" target="_blank" rel="external">http://chaoqunz.blog.163.com/blog/static/6154877720090495819383/</a></li>
+<li><a href="http://blog.csdn.net/qinjuning/article/details/6978560" target="_blank" rel="external">http://blog.csdn.net/qinjuning/article/details/6978560</a></li>
+<li><a href="http://blog.csdn.net/qinjuning/article/details/7009824" target="_blank" rel="external">http://blog.csdn.net/qinjuning/article/details/7009824</a></li>
+<li><a href="http://m.blog.csdn.net/blog/zsqxiao/44755621" target="_blank" rel="external">http://m.blog.csdn.net/blog/zsqxiao/44755621</a></li>
+<li><a href="http://stackoverflow.com/questions/27689276/how-to-get-running-application-activity-name-in-android-5-0l" target="_blank" rel="external">http://stackoverflow.com/questions/27689276/how-to-get-running-application-activity-name-in-android-5-0l</a></li>
+<li><a href="http://stackoverflow.com/questions/27087675/cannot-get-foreground-activity-name-in-android-lollipop-5-0-only" target="_blank" rel="external">http://stackoverflow.com/questions/27087675/cannot-get-foreground-activity-name-in-android-lollipop-5-0-only</a></li>
+<li><a href="http://stackoverflow.com/questions/28361629/activitynotfoundexception-in-lollipop-when-trying-to-launch-activity-with-intent" target="_blank" rel="external">http://stackoverflow.com/questions/28361629/activitynotfoundexception-in-lollipop-when-trying-to-launch-activity-with-intent</a></li>
+<li><a href="http://stackoverflow.com/questions/28296633/android-usage-access-for-android-5-samsung-devices" target="_blank" rel="external">http://stackoverflow.com/questions/28296633/android-usage-access-for-android-5-samsung-devices</a></li>
+<li><a href="http://android.stackexchange.com/questions/114525/how-to-access-apps-with-usage-access-setting-on-lg-g3" target="_blank" rel="external">http://android.stackexchange.com/questions/114525/how-to-access-apps-with-usage-access-setting-on-lg-g3</a></li>
+<li><a href="http://blog.chinaunix.net/uid-23960192-id-3549140.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-23960192-id-3549140.html</a></li>
+<li><a href="http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag" target="_blank" rel="external">http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag</a></li>
+<li><a href="http://stackoverflow.com/questions/3873659/android-how-can-i-get-the-current-foreground-activity-from-a-service/27642535#27642535" target="_blank" rel="external">http://stackoverflow.com/questions/3873659/android-how-can-i-get-the-current-foreground-activity-from-a-service/27642535#27642535</a></li>
+<li><a href="https://github.com/Yhzhtk/note/issues/31" target="_blank" rel="external">https://github.com/Yhzhtk/note/issues/31</a></li>
+<li><a href="http://laoxu.blog.51cto.com/4120547/1267097" target="_blank" rel="external">http://laoxu.blog.51cto.com/4120547/1267097</a></li>
+<li><a href="http://man7.org/linux/man-pages/man5/proc.5.html" target="_blank" rel="external">http://man7.org/linux/man-pages/man5/proc.5.html</a></li>
+<li><a href="http://wushank.blog.51cto.com/3489095/1406765" target="_blank" rel="external">http://wushank.blog.51cto.com/3489095/1406765</a></li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-系统兼容/" rel="tag">#Android 系统兼容</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/22/vim-instant-markdown/" rel="next" title="vim即时预览markdown">
+                <i class="fa fa-chevron-left"></i> vim即时预览markdown
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/27/android-uids-IMEI-MEID-PESN-ESN/" rel="prev" title="【Android设备信息】IMEI、MEID、PESN、ESN">
+                【Android设备信息】IMEI、MEID、PESN、ESN <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2015/09/29/get-top-package-name/"
+     data-title="获取当前顶端包名【兼容所有系统】"
+     data-content=""
+     data-url="http://caizhitao.com/2015/09/29/get-top-package-name/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/09/29/get-top-package-name/"
+           data-title="获取当前顶端包名【兼容所有系统】" data-url="http://caizhitao.com/2015/09/29/get-top-package-name/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/author.jpg"
+               alt="Zhitao Cai" />
+          <p class="site-author-name" itemprop="name">Zhitao Cai</p>
+          <p class="site-description motion-element" itemprop="description">专注成就专业，我只饮菠萝啤</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhitaocai" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/caizhitao" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Star</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">StormZhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/category/android/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/sinyu890807" target="_blank">GuoLin</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuchong.me" target="_blank">Jark</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.iissnan.com/" target="_blank">IissNan</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Android_5-0_之前"><span class="nav-number">1.</span> <span class="nav-text">Android 5.0 之前</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#直接通过getRunningTasks方法进行获取"><span class="nav-number">1.1.</span> <span class="nav-text">直接通过getRunningTasks方法进行获取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用法"><span class="nav-number">1.1.1.</span> <span class="nav-text">用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">1.1.2.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android_5-0_之后"><span class="nav-number">2.</span> <span class="nav-text">Android 5.0 之后</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过getRunningAppProcesses方法进行获取"><span class="nav-number">2.1.</span> <span class="nav-text">通过getRunningAppProcesses方法进行获取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">2.1.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过Android_5-0提供的新API进行获取"><span class="nav-number">2.2.</span> <span class="nav-text">通过Android 5.0提供的新API进行获取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论-2"><span class="nav-number">2.2.2.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结(截止至2015-09-22)"><span class="nav-number">3.</span> <span class="nav-text">总结(截止至2015-09-22)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后续尝试"><span class="nav-number">4.</span> <span class="nav-text">后续尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#尝试dunpsys命令"><span class="nav-number">4.1.</span> <span class="nav-text">尝试dunpsys命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尝试通过/proc目录进行判断"><span class="nav-number">4.2.</span> <span class="nav-text">尝试通过/proc目录进行判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过accessibility-service服务进行"><span class="nav-number">4.3.</span> <span class="nav-text">通过accessibility-service服务进行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">4.4.</span> <span class="nav-text">结语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记&&最终解决方案"><span class="nav-number">5.</span> <span class="nav-text">后记&&最终解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhitao Cai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      //if (CONFIG.sidebar === 'post') {
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"caizhitao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

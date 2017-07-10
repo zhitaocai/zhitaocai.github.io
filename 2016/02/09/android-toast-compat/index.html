@@ -1,0 +1,824 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android 系统兼容," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhitao Cai's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+
+
+
+<meta name="description" content="早~~，大年初二，一大早就被喉咙痛痛醒（夜晚睡觉之前不要饮太多雪碧），实在受不了，就起床了，想起前段时间在小米系统上遇到的一个诡异问题，于是趁这个机会码一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决小米MIUI系统上后台应用没法弹Toast的问题">
+<meta property="og:url" content="http://caizhitao.com/2016/02/09/android-toast-compat/index.html">
+<meta property="og:site_name" content="Zhitao Cai's Blog">
+<meta property="og:description" content="早~~，大年初二，一大早就被喉咙痛痛醒（夜晚睡觉之前不要饮太多雪碧），实在受不了，就起床了，想起前段时间在小米系统上遇到的一个诡异问题，于是趁这个机会码一下">
+<meta property="og:image" content="http://caizhitao.com/img/Momentum/201602090742.jpg">
+<meta property="og:image" content="http://caizhitao.com/img/MIUI/toast-problem.png">
+<meta property="og:updated_time" content="2016-07-16T00:33:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决小米MIUI系统上后台应用没法弹Toast的问题">
+<meta name="twitter:description" content="早~~，大年初二，一大早就被喉咙痛痛醒（夜晚睡觉之前不要饮太多雪碧），实在受不了，就起床了，想起前段时间在小米系统上遇到的一个诡异问题，于是趁这个机会码一下">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 解决小米MIUI系统上后台应用没法弹Toast的问题 | Zhitao Cai's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?86b8e909fc50a5340f9c4381ad36cf46";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Zhitao Cai's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">专注成就专业，我只饮菠萝啤</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                解决小米MIUI系统上后台应用没法弹Toast的问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-09T07:42:13+08:00" content="2016-02-09">
+              2016-02-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android-Develop/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Develop</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/09/android-toast-compat/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/09/android-toast-compat/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/img/Momentum/201602090742.jpg" alt=""></p>
+<p>早~~，大年初二，一大早就被喉咙痛痛醒（夜晚睡觉之前不要饮太多雪碧），实在受不了，就起床了，想起前段时间在小米系统上遇到的一个诡异问题，于是趁这个机会码一下</p>
+<a id="more"></a>
+<h2 id="问题">问题</h2><p>某一天发现在小米的MIUI系统上，一个好好的Toast总是不能弹出来，写法是没有问题的，直到发现log中出现一个<code>invisible to user</code>的输出，几经google，百度，解决方案没找到，倒是在 <a href="http://www.miui.com/thread-2628717-1-1.html" target="_blank" rel="external">小米开发者论坛帖子</a>中找到发现相同问题的同学们T_T<br><img src="/img/MIUI/toast-problem.png" alt=""></p>
+<p>问题明确了：<strong>后台应用在小米MIUI系统（没有仔细测试每个版本，应该是自某个版本开始的，大概测试的时候，低版本miui还是正常运行，高版本的就不能）上没有办法弹出Toast。</strong></p>
+<h2 id="解决">解决</h2><p>经过一番看源码和在某一篇<a href="http://www.cnblogs.com/net168/p/4058193.html" target="_blank" rel="external">关于Toast源码分析的博文</a>中了解到</p>
+<p>Toast的弹出流程：</p>
+<ol>
+<li>通过<code>new Toast(Context context)</code>或者<code>makeText(...)</code>方法实例化Toast对象</li>
+<li>调用<code>show()</code>方法之后，实例会加入到一个TN变量(AIDL)的服务队列中，而这个队列由系统维护</li>
+<li>TN控制Toast的显示和消息</li>
+</ol>
+<p>于是就好猜测了，MIUI上可能是出于<strong>“绿化”</strong>的考虑，在维护Toast队列的时候，Toast只能在自己的进程运行在顶端的时候才能弹出来，否则就<strong>“invisible to user”</strong>.</p>
+<p>那么尝试性的解决方案就有了：<strong>我们自己参照Toast的源码，重写一份，最后show的时候，不进入TN维护的队列，我们自己用Handler+Queue来维护Toast的消息队列</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> io.github.zhitaocai.toastcompat.toastcompat;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.annotation.TargetApi;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.res.Configuration;</span><br><span class="line"><span class="keyword">import</span> android.graphics.PixelFormat;</span><br><span class="line"><span class="keyword">import</span> android.os.Build;</span><br><span class="line"><span class="keyword">import</span> android.os.Handler;</span><br><span class="line"><span class="keyword">import</span> android.view.Gravity;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.view.WindowManager;</span><br><span class="line"><span class="keyword">import</span> android.widget.TextView;</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.BlockingQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.LinkedBlockingQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.github.zhitaocai.toastcompat.util.DisplayUtil;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * <span class="doctag">@author</span> zhitao</span><br><span class="line"> * <span class="doctag">@since</span> 2016-01-21 14:33</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MIUIToast</span> <span class="keyword">implements</span> <span class="title">IToast</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Handler mHandler = <span class="keyword">new</span> Handler();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 维护toast的队列</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> BlockingQueue&lt;MIUIToast&gt; mQueue = <span class="keyword">new</span> LinkedBlockingQueue&lt;MIUIToast&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 原子操作：判断当前是否在读取&#123;<span class="doctag">@linkplain</span> #mQueue 队列&#125;来显示toast</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">static</span> AtomicInteger mAtomicInteger = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> WindowManager mWindowManager;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> mDurationMillis;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> View mView;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> WindowManager.LayoutParams mParams;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Context mContext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IToast <span class="title">makeText</span><span class="params">(Context context, String text, <span class="keyword">long</span> duration)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MIUIToast(context).setText(text).setDuration(duration)</span><br><span class="line">                .setGravity(Gravity.BOTTOM, <span class="number">0</span>, DisplayUtil.dip2px(context, <span class="number">64</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MIUIToast</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        mContext = context;</span><br><span class="line">        mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);</span><br><span class="line">        mParams = <span class="keyword">new</span> WindowManager.LayoutParams();</span><br><span class="line">        mParams.height = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">        mParams.width = WindowManager.LayoutParams.WRAP_CONTENT;</span><br><span class="line">        mParams.format = PixelFormat.TRANSLUCENT;</span><br><span class="line">        mParams.windowAnimations = android.R.style.Animation_Toast;</span><br><span class="line">        mParams.type = WindowManager.LayoutParams.TYPE_TOAST;</span><br><span class="line">        mParams.setTitle(<span class="string">"Toast"</span>);</span><br><span class="line">        mParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |</span><br><span class="line">                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;</span><br><span class="line">        <span class="comment">// 默认小米Toast在下方居中</span></span><br><span class="line">        mParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * Set the location at which the notification should appear on the screen.</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> gravity</span><br><span class="line">     * <span class="doctag">@param</span> xOffset</span><br><span class="line">     * <span class="doctag">@param</span> yOffset</span><br><span class="line">     */</span></span><br><span class="line">    <span class="annotation">@TargetApi</span>(Build.VERSION_CODES.JELLY_BEAN_MR1)</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IToast <span class="title">setGravity</span><span class="params">(<span class="keyword">int</span> gravity, <span class="keyword">int</span> xOffset, <span class="keyword">int</span> yOffset)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// We can resolve the Gravity here by using the Locale for getting</span></span><br><span class="line">        <span class="comment">// the layout direction</span></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> finalGravity;</span><br><span class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= <span class="number">14</span>) &#123;</span><br><span class="line">            <span class="keyword">final</span> Configuration config = mView.getContext().getResources().getConfiguration();</span><br><span class="line">            finalGravity = Gravity.getAbsoluteGravity(gravity, config.getLayoutDirection());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            finalGravity = gravity;</span><br><span class="line">        &#125;</span><br><span class="line">        mParams.gravity = finalGravity;</span><br><span class="line">        <span class="keyword">if</span> ((finalGravity &amp; Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.FILL_HORIZONTAL) &#123;</span><br><span class="line">            mParams.horizontalWeight = <span class="number">1.0f</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ((finalGravity &amp; Gravity.VERTICAL_GRAVITY_MASK) == Gravity.FILL_VERTICAL) &#123;</span><br><span class="line">            mParams.verticalWeight = <span class="number">1.0f</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        mParams.y = yOffset;</span><br><span class="line">        mParams.x = xOffset;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IToast <span class="title">setDuration</span><span class="params">(<span class="keyword">long</span> durationMillis)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (durationMillis &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            mDurationMillis = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (durationMillis == Toast.LENGTH_SHORT) &#123;</span><br><span class="line">            mDurationMillis = <span class="number">2000</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (durationMillis == Toast.LENGTH_LONG) &#123;</span><br><span class="line">            mDurationMillis = <span class="number">3500</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mDurationMillis = durationMillis;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 不能和&#123;<span class="doctag">@link</span> #setText(String)&#125;一起使用，要么&#123;<span class="doctag">@link</span> #setView(View)&#125; 要么&#123;<span class="doctag">@link</span> #setView(View)&#125;</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> view</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@return</span></span><br><span class="line">     */</span></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IToast <span class="title">setView</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">        mView = view;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IToast <span class="title">setMargin</span><span class="params">(<span class="keyword">float</span> horizontalMargin, <span class="keyword">float</span> verticalMargin)</span> </span>&#123;</span><br><span class="line">        mParams.horizontalMargin = horizontalMargin;</span><br><span class="line">        mParams.verticalMargin = verticalMargin;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 不能和&#123;<span class="doctag">@link</span> #setView(View)&#125;一起使用，要么&#123;<span class="doctag">@link</span> #setView(View)&#125; 要么&#123;<span class="doctag">@link</span> #setView(View)&#125;</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@return</span></span><br><span class="line">     */</span></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IToast <span class="title">setText</span><span class="params">(String text)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 模拟Toast的布局文件 com.android.internal.R.layout.transient_notification</span></span><br><span class="line">        <span class="comment">// 虽然可以手动用java写，但是不同厂商系统，这个布局的设置好像是不同的，因此我们自己获取原生Toast的view进行配置</span></span><br><span class="line"></span><br><span class="line">        View view = Toast.makeText(mContext, text, Toast.LENGTH_SHORT).getView();</span><br><span class="line">        <span class="keyword">if</span> (view != <span class="keyword">null</span>) &#123;</span><br><span class="line">            TextView tv = (TextView) view.findViewById(android.R.id.message);</span><br><span class="line">            tv.setText(text);</span><br><span class="line">            setView(view);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 1. 将本次需要显示的toast加入到队列中</span></span><br><span class="line">        mQueue.offer(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 如果队列还没有激活，就激活队列，依次展示队列中的toast</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="number">0</span> == mAtomicInteger.get()) &#123;</span><br><span class="line">            mAtomicInteger.incrementAndGet();</span><br><span class="line">            mHandler.post(mActivite);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 1. 如果队列已经处于非激活状态或者队列没有toast了，就表示队列没有toast正在展示了，直接return</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="number">0</span> == mAtomicInteger.get() &amp;&amp; mQueue.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 当前显示的toast是否为本次要取消的toast，如果是的话</span></span><br><span class="line">        <span class="comment">// 2.1 先移除之前的队列逻辑</span></span><br><span class="line">        <span class="comment">// 2.2 立即暂停当前显示的toast</span></span><br><span class="line">        <span class="comment">// 2.3 重新激活队列</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.equals(mQueue.peek())) &#123;</span><br><span class="line">            mHandler.removeCallbacks(mActivite);</span><br><span class="line">            mHandler.post(mHide);</span><br><span class="line">            mHandler.post(mActivite);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//<span class="doctag">TODO</span> 如果一个Toast在队列中的等候展示，当调用了这个toast的取消时，考虑是否应该从对队列中移除，看产品需求吧</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleShow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mView != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (mView.getParent() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mWindowManager.removeView(mView);</span><br><span class="line">            &#125;</span><br><span class="line">            mWindowManager.addView(mView, mParams);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleHide</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mView != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// <span class="doctag"><span class="keyword">note</span></span>: checking parent() just to make sure the view has</span></span><br><span class="line">            <span class="comment">// been added...  i have seen cases where we get here when</span></span><br><span class="line">            <span class="comment">// the view isn't yet added, so let's try not to crash.</span></span><br><span class="line">            <span class="keyword">if</span> (mView.getParent() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mWindowManager.removeView(mView);</span><br><span class="line">                <span class="comment">// 同时从队列中移除这个toast</span></span><br><span class="line">                mQueue.poll();</span><br><span class="line">            &#125;</span><br><span class="line">            mView = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">activeQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        MIUIToast miuiToast = mQueue.peek();</span><br><span class="line">        <span class="keyword">if</span> (miuiToast == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 如果不能从队列中获取到toast的话，那么就表示已经暂时完所有的toast了</span></span><br><span class="line">            <span class="comment">// 这个时候需要标记队列状态为：非激活读取中</span></span><br><span class="line">            mAtomicInteger.decrementAndGet();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果还能从队列中获取到toast的话，那么就表示还有toast没有展示</span></span><br><span class="line">            <span class="comment">// 1. 展示队首的toast</span></span><br><span class="line">            <span class="comment">// 2. 设置一定时间后主动采取toast消失措施</span></span><br><span class="line">            <span class="comment">// 3. 设置展示完毕之后再次执行本逻辑，以展示下一个toast</span></span><br><span class="line">            mHandler.post(miuiToast.mShow);</span><br><span class="line">            mHandler.postDelayed(miuiToast.mHide, miuiToast.mDurationMillis);</span><br><span class="line">            mHandler.postDelayed(mActivite, miuiToast.mDurationMillis);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Runnable mShow = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            handleShow();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Runnable mHide = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            handleHide();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Runnable mActivite = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            activeQueue();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整源码地址在<a href="https://github.com/zhitaocai/ToastCompat" target="_blank" rel="external">这里</a></p>
+<h2 id="后记（2016-02-19）">后记（2016-02-19）</h2><p>今天测试的时候，升级红米2的MIUI系统为 <strong>MIUI 7.0 | 稳定版7.0.6.0 (LHMCNCI)</strong> ，发现使用系统默认的toast，后台应用也能弹出toast了</p>
+<p><strong>所以猜测MIUI系统在某个版本区间，才会出现后台应用没法弹出toast的问题</strong></p>
+<h2 id="参考资料">参考资料</h2><ul>
+<li><a href="http://www.cnblogs.com/net168/p/4041763.html" target="_blank" rel="external">Android：谈一谈安卓应用中的Toast情节（基础）</a></li>
+<li><a href="http://www.cnblogs.com/net168/p/4058193.html" target="_blank" rel="external">Android：剖析源码，随心所欲控制Toast显示</a></li>
+<li><a href="http://www.cnblogs.com/net168/p/4237528.html" target="_blank" rel="external">Android应用系列：仿MIUI的Toast动画效果实现（有图有源码）</a></li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-系统兼容/" rel="tag">#Android 系统兼容</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/07/Groovy-multi-task-execute/" rel="next" title="【Gradle随笔】多任务创建与执行">
+                <i class="fa fa-chevron-left"></i> 【Gradle随笔】多任务创建与执行
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/20/gradle-properties/" rel="prev" title="Gradle Property 使用详解">
+                Gradle Property 使用详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/02/09/android-toast-compat/"
+     data-title="解决小米MIUI系统上后台应用没法弹Toast的问题"
+     data-content=""
+     data-url="http://caizhitao.com/2016/02/09/android-toast-compat/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/02/09/android-toast-compat/"
+           data-title="解决小米MIUI系统上后台应用没法弹Toast的问题" data-url="http://caizhitao.com/2016/02/09/android-toast-compat/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/author.jpg"
+               alt="Zhitao Cai" />
+          <p class="site-author-name" itemprop="name">Zhitao Cai</p>
+          <p class="site-description motion-element" itemprop="description">专注成就专业，我只饮菠萝啤</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhitaocai" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/caizhitao" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Star</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://stormzhang.com/" target="_blank">StormZhang</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.trinea.cn/category/android/" target="_blank">Trinea</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://my.csdn.net/sinyu890807" target="_blank">GuoLin</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://wuchong.me" target="_blank">Jark</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://notes.iissnan.com/" target="_blank">IissNan</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记（2016-02-19）"><span class="nav-number">3.</span> <span class="nav-text">后记（2016-02-19）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhitao Cai</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      //if (CONFIG.sidebar === 'post') {
+      if (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"caizhitao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
